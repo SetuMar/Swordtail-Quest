@@ -3,7 +3,7 @@ from settings import *
 
 class Player:
     def __init__(self, position:pygame.Vector2, move_speed:int = 10) -> None:
-        self.image = pygame.Surface(BLOCK_SIZE)
+        self.image = pygame.Surface((BLOCK_SIZE, BLOCK_SIZE))
         self.image.fill((255, 0, 0))
         # replace with sprite ASAP
         
