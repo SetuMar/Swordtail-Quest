@@ -10,7 +10,7 @@ pygame.init()
 display = pygame.display.set_mode(SCREEN_SIZE)
 clock = pygame.time.Clock()
 
-player_character = player.Player(pygame.Vector2(200, 200))
+player_character = player.Player(pygame.Vector2(200, 300))
 
 tiles = level_loader.generate_level("/Users/setumarathe/Desktop/coding/Waterloo Game/Graphics/Levels/1.tmx")
 
@@ -21,7 +21,7 @@ while True:
             pygame.quit()
             sys.exit()
             
-    player_character.update()
+    player_character.update(tiles)
     player_character.draw(display)
     
     for t in tiles:
