@@ -23,6 +23,7 @@ player_character = player.Player(pygame.Vector2(200, 600))
 tiles = level_loader.generate_level(r"C:\Users\bpas2\OneDrive\Desktop\hackathon\waterloo-cs-proj-main\Graphics\levels\1.tmx")
 # get the tiles for the current level
 double_test = Double_jump()
+#this is a test doublejump object
 while True:
     display.fill('white')
     # clear background to allow for drawing of next frame
@@ -43,7 +44,9 @@ while True:
                 t.draw(display)
     # draw all tiles in the level
     double_test.draw(display)
+    #draw in the doublejump object
     double_test.collide(player_character)
+    #check for doublejump collisions
     pygame.display.update()
     clock.tick(FPS)
     # update the display
