@@ -38,8 +38,10 @@ while True:
     player_character.draw(display)
     # draw the player
     
-    for t in tiles:
-        t.draw(display)
+    for layer, layer_tiles in tiles.items():
+        for t in layer_tiles:
+            if t.rect.left < SCREEN_WIDTH and t.rect.right > 0:
+                t.draw(display)
     # draw all tiles in the level
 
     pygame.display.update()

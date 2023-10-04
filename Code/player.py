@@ -5,7 +5,7 @@ from settings import *
 # import settings
 
 class Player:
-    def __init__(self, position:pygame.Vector2, move_speed:int = 7, fall_speed:int = 0.8, jump_speed:int = -12) -> None:
+    def __init__(self, position:pygame.Vector2, move_speed:int = 6, fall_speed:int = 0.8, jump_speed:int = -12, camera_move_distance:int = 200) -> None:
         self.image = pygame.Surface((BLOCK_SIZE, BLOCK_SIZE))
         self.image.fill((255, 0, 0))
         # replace with sprite ASAP
@@ -28,7 +28,9 @@ class Player:
         self.direction = pygame.Vector2(0, 0)
         # direction of movement (on x and y axes)
         
-    def update(self, tiles:list):
+        self.free_movement_region = (camera_move_distance, SCREEN_WIDTH - camera_move_distance)
+        
+    def update(self, tiles:dict):
         keys = pygame.key.get_pressed()
         # pressed keys
         
@@ -37,10 +39,16 @@ class Player:
             # move the player in the x and y axes
             # multiply by scalar of move speed
             
-            self.rect.x += self.direction.x
+            if ((self.rect.right > self.free_movement_region[1]) and (self.direction.x > 0) or (self.rect.left < self.free_movement_region[0]) and (self.direction.x < 0)):
             # move the player by the direction
+                for tile_list in tiles.values():
+                    for t in tile_list:
+                        t.rect.x -= self.direction.x
+            else:
+                self.rect.x += self.direction.x
             
-            for t in tiles:
+            
+            for t in tiles["outline"]:
             # loop through tiles
                 if self.rect.colliderect(t.rect):
                 # check for collision with tiles
@@ -74,10 +82,10 @@ class Player:
             self.rect.y += self.direction.y
             # move the player by the y-direction on the y axis
             
-            collision_detected = False
+            floor_collision_detected = False
             # if a floor direction has been detected
             
-            for t in tiles:
+            for t in tiles["outline"]:
             # loop through tiles
                 if self.rect.colliderect(t.rect):
                 # check for collision with tiles
@@ -93,10 +101,14 @@ class Player:
                         # stop moving the player down (no need for gravity)
                         self.can_jump = True
                         # allow the player to jump (he is on ground now)
-                        collision_detected = True
+                        floor_collision_detected = True
                         # a collision has been detected
+                    
+                    elif (self.direction.y < 0) and (self.rect.top > t.rect.top):
+                        self.rect.top = t.rect.bottom
+                        self.direction.y = 0
                         
-            if not collision_detected: self.can_jump = False
+            if not floor_collision_detected: self.can_jump = False
             # if a floor is not detected, then do not allow jump
         
         horizontal_movement()
