@@ -17,7 +17,7 @@ display = pygame.display.set_mode(SCREEN_SIZE)
 clock = pygame.time.Clock()
 # clock -> allows for updating
 
-player_character = player.Player(pygame.Vector2(200, 300))
+player_character = player.Player(pygame.Vector2(200, 600))
 # player
 
 tiles = level_loader.generate_level("/Users/setumarathe/Desktop/coding/Waterloo Game/Graphics/Levels/1.tmx")
