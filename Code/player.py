@@ -3,9 +3,9 @@ import pygame
 
 from settings import *
 # import settings
-
+from powerups import *
 class Player:
-    def __init__(self, position:pygame.Vector2, move_speed:int = 6, fall_speed:int = 0.8, jump_speed:int = -12, camera_move_distance:int = 200) -> None:
+    def __init__(self, position:pygame.Vector2, move_speed:int = 6, fall_speed:int = 0.5, jump_speed:int = -12, camera_move_distance:int = 200) -> None:
         self.image = pygame.Surface((BLOCK_SIZE, BLOCK_SIZE))
         self.image.fill((255, 0, 0))
         # replace with sprite ASAP
@@ -24,7 +24,10 @@ class Player:
         
         self.can_jump = False
         # if the player can jump
-        
+        self.has_double_jump = False
+        #if the player is currently powered up with double jump
+        self.can_double_jump = False
+        #if the player has the current ability to perform a double jump
         self.direction = pygame.Vector2(0, 0)
         # direction of movement (on x and y axes)
         
@@ -70,13 +73,19 @@ class Player:
                         # stop movement on the x for this frame
         
         def vertical_movement():
-            if keys[JUMP_KEY] and self.can_jump:
-            # if JUMP_KEY pressed and player and can_jump
-                self.direction.y = self.jump_speed
-                # set y-direction to jump_speed
-                self.can_jump = False
-                # don't allow to jump until hits flow
-                
+            if keys[JUMP_KEY]: 
+                if self.can_jump:
+                    # if JUMP_KEY pressed and player and can_jump
+                    self.direction.y = self.jump_speed
+                    # set y-direction to jump_speed
+                    self.can_jump = False
+                    # don't allow to jump until hits flow
+                elif self.can_double_jump and self.direction.y > 0:
+                    # if JUMP_KEY pressed and player and can_double_jump
+                    self.direction.y = self.jump_speed
+                    # set y-direction to jump_speed
+                    self.can_double_jump = False
+                    # double jump refreshes on landing
             self.direction.y += self.fall_speed
             # add gravity to y-direction 
             self.rect.y += self.direction.y
@@ -101,6 +110,9 @@ class Player:
                         # stop moving the player down (no need for gravity)
                         self.can_jump = True
                         # allow the player to jump (he is on ground now)
+                        if self.has_double_jump:
+                            self.can_double_jump = True
+                        # double jump refreshes on landing                       
                         floor_collision_detected = True
                         # a collision has been detected
                     

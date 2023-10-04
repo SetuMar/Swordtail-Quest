@@ -8,7 +8,7 @@ from settings import *
 import level_loader
 import player
 # import game scripts
-
+from powerups import *
 pygame.init()
 # initialize pygame
 
@@ -20,13 +20,12 @@ clock = pygame.time.Clock()
 player_character = player.Player(pygame.Vector2(200, 600))
 # player
 
-tiles = level_loader.generate_level("/Users/setumarathe/Desktop/coding/Waterloo Game/Graphics/Levels/1.tmx")
+tiles = level_loader.generate_level(r"C:\Users\bpas2\OneDrive\Desktop\hackathon\waterloo-cs-proj-main\Graphics\levels\1.tmx")
 # get the tiles for the current level
-
+double_test = Double_jump()
 while True:
     display.fill('white')
     # clear background to allow for drawing of next frame
-    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -43,7 +42,8 @@ while True:
             if t.rect.left < SCREEN_WIDTH and t.rect.right > 0:
                 t.draw(display)
     # draw all tiles in the level
-
+    double_test.draw(display)
+    double_test.collide(player_character)
     pygame.display.update()
     clock.tick(FPS)
     # update the display
