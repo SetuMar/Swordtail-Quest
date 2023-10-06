@@ -12,8 +12,8 @@ FPS = 60
 BLOCK_SIZE = 16
 # 16 x 16 blocks
 
-MOVE_LEFT_KEY = pygame.K_LEFT
-MOVE_RIGHT_KEY = pygame.K_RIGHT
-JUMP_KEY = pygame.K_UP
+MOVE_LEFT_KEY = ord("a")
+MOVE_RIGHT_KEY = ord("d")
+JUMP_KEY = ord("w")
 USE_ABILITY_KEY = ord("q")
 # keys used for movement
