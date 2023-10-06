@@ -15,4 +15,5 @@ BLOCK_SIZE = 16
 MOVE_LEFT_KEY = pygame.K_LEFT
 MOVE_RIGHT_KEY = pygame.K_RIGHT
 JUMP_KEY = pygame.K_UP
+USE_ABILITY_KEY = ord("q")
 # keys used for movement
