@@ -20,10 +20,16 @@ clock = pygame.time.Clock()
 player_character = player.Player(pygame.Vector2(200, 600))
 # player
 
-tiles = level_loader.generate_level(r"C:\Users\bpas2\OneDrive\Desktop\hackathon\waterloo-cs-proj-main\Graphics\levels\1.tmx")
+tiles = level_loader.generate_level(r"Graphics\levels\1.tmx")
 # get the tiles for the current level
 double_test = Double_jump()
 #this is a test doublejump object
+dash_test = Dash()
+#this is a test dash object
+#define refresh_dash as a pygame event(to let it work on a timer)
+refresh_dash = pygame.USEREVENT + 1
+#let player dash again after every 4 seconds
+pygame.time.set_timer(refresh_dash,4000)
 while True:
     display.fill('white')
     # clear background to allow for drawing of next frame
@@ -31,6 +37,9 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        if event.type == refresh_dash:
+            if player_character.has_dash:
+                player_character.can_dash = True
     # check for exiting the window
     
     player_character.update(tiles)
@@ -47,6 +56,10 @@ while True:
     #draw in the doublejump object
     double_test.collide(player_character)
     #check for doublejump collisions
+    dash_test.draw(display)
+    #draw in the dash object
+    dash_test.collide(player_character)
+    #check for dash collisions
     pygame.display.update()
     clock.tick(FPS)
     # update the display

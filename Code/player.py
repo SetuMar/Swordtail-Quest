@@ -28,6 +28,10 @@ class Player:
         #if the player is currently powered up with double jump
         self.can_double_jump = False
         #if the player has the current ability to perform a double jump
+        self.has_dash = False
+        #if the player is currently powered up with dash
+        self.can_dash = False
+        #if the player has the current ability to perform a dash
         self.direction = pygame.Vector2(0, 0)
         # direction of movement (on x and y axes)
         
@@ -41,7 +45,10 @@ class Player:
             self.direction.x = (keys[MOVE_RIGHT_KEY] - keys[MOVE_LEFT_KEY]) * self.move_speed
             # move the player in the x and y axes
             # multiply by scalar of move speed
-            
+            if keys[USE_ABILITY_KEY]:#if the use ability key is pressed
+                if self.can_dash:#and the user both is powered up with dash and dash is not on cooldown
+                    self.direction.x = self.direction.x * 50 # Send the player flying at 50* their movement speed for an instant
+                    self.can_dash = False #Put dash on cooldown
             if ((self.rect.right > self.free_movement_region[1]) and (self.direction.x > 0) or (self.rect.left < self.free_movement_region[0]) and (self.direction.x < 0)):
             # move the player by the direction
                 for tile_list in tiles.values():
@@ -74,18 +81,17 @@ class Player:
         
         def vertical_movement():
             if keys[JUMP_KEY]: 
-                if self.can_jump:
-                    # if JUMP_KEY pressed and player and can_jump
+                if self.can_jump or (self.can_double_jump and self.direction.y > 0):
+                    # if JUMP_KEY pressed and player and can_jump or can_double_jump
                     self.direction.y = self.jump_speed
                     # set y-direction to jump_speed
-                    self.can_jump = False
-                    # don't allow to jump until hits flow
-                elif self.can_double_jump and self.direction.y > 0:
-                    # if JUMP_KEY pressed and player and can_double_jump
-                    self.direction.y = self.jump_speed
-                    # set y-direction to jump_speed
-                    self.can_double_jump = False
-                    # double jump refreshes on landing
+                    #Check whether this is a jump or a double jump
+                    if self.can_jump:
+                        self.can_jump = False
+                        #remove ability to jump until landing
+                    else:
+                        self.can_double_jump = False
+                        # double jump refreshes on landing
             self.direction.y += self.fall_speed
             # add gravity to y-direction 
             self.rect.y += self.direction.y
@@ -122,7 +128,7 @@ class Player:
                         
             if not floor_collision_detected: self.can_jump = False
             # if a floor is not detected, then do not allow jump
-        
+
         horizontal_movement()
         # move horizontally (and collisions)
         vertical_movement()
@@ -131,3 +137,4 @@ class Player:
     def draw(self, display:pygame.Surface):
         display.blit(self.image, self.rect.topleft)
         # draw player onto display
+    
