@@ -9,7 +9,7 @@ SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
 FPS = 60
 # FPS of game (frames per second)
 
-BLOCK_SIZE = 16
+BLOCK_SIZE = 32
 # 16 x 16 blocks
 
 MOVE_LEFT_KEY = ord("a")

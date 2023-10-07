@@ -1,0 +1,24 @@
+{
+    "activeFile": "1.tmx",
+    "fileStates": {
+        "1.tmx": {
+            "scale": 0.27,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 781.4814814814814,
+                "y": 612.9629629629629
+            }
+        },
+        "spritesheet-main.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "openFiles": [
+        "1.tmx"
+    ],
+    "recentFiles": [
+        "1.tmx",
+        "spritesheet-main.tsx"
+    ]
+}

@@ -1,64 +1,63 @@
 import pygame
+    
 class Powerup:
-    #Base powerup class
-    #It's empty for now 
-    #TODO: Figure out how to put the repeated lines of code in Double_jump and Dash into here
-    def __init__(self) -> None:
-        pass
-class Double_jump(Powerup):
-    def __init__(self) -> None:
-        #Load the doublejump image
-        self.image = pygame.image.load("Graphics\doublejumpplaceholder.png")   
-        #Make a rect based off the image
+    def __init__(self, image:str, position:pygame.Vector2, type:str) -> None:
+        self.image = pygame.image.load(image)
         self.rect = self.image.get_rect()
-        #Place the x and y at 250 and 650. These are values for testing and will probably be changed when implemented into levels
-        self.rect.x = 250
-        self.rect.y = 650
-    def draw(self,display):
-        #If self.image is none, the powerup has been deleted. If you try to blit a deleted image the code crashes.
+        self.rect.topleft = position
+        self.type = type
+    
+    def draw(self, display):
+        # if self.image is none, the powerup has been deleted
+        # if you try to blit a deleted image the code crashes
         if self.image != None:
-            #Blit the image
+        # if image does not exist, then do not draw
             display.blit(self.image,self.rect.topleft)
-    #Collision detection with the player and powerup
-    def collide(self,Player):
-        #Only collide if the collision hasn't already occured(the powerup is deleted on collision)
-        if self.rect != None:
-            #If the player is colliding with the powerup
-            if self.rect.colliderect(Player.rect):
-                #The player now has the ability to double jump
-                Player.has_double_jump = True
-                #delete the sprite
+            # blit the image
+            
+    def collide(self, player):
+        if self.rect is not None and self.rect.colliderect(player.rect):
+            # If the player is colliding with the powerup
+                # Delete the sprite
+                if self.type == "double_jump": player.has_double_jump = True
+                
                 self.image = None
-                #and the hitbox
+                # and the hitbox
                 self.rect = None
-class Dash(Powerup):
-    def __init__(self) -> None:
-        #Load the Dash image
-        self.image = pygame.image.load("Graphics\dashplaceholder.png")   
-        #Make a rect based off the image
-        self.rect = self.image.get_rect()
-        #Place the x and y at 400 and 600. These are values for testing and will probably be changed when implemented into levels
-        self.rect.x = 400
-        self.rect.y = 600
-    def draw(self,display):
-        #If self.image is none, the powerup has been deleted. If you try to blit a deleted image the code crashes.
-        if self.image != None:
-            #Blit the image
-            display.blit(self.image,self.rect.topleft)
-    #Collision detection with the player and powerup
-    def collide(self,Player):
-        #Only collide if the collision hasn't already occured(the powerup is deleted on collision)
-        if self.rect != None:
-            #If the player is colliding with the powerup
-            if self.rect.colliderect(Player.rect):
-                #The player now has the ability to dash
-                Player.has_dash = True
-                #The player now can dash immediately
-                Player.can_dash = True
-                #delete the sprite
-                self.image = None
-                #and the hitbox
-                self.rect = None
+        
+# class Dash():
+#     def __init__(self) -> None:
+#         #Load the Dash image
+#         self.image = pygame.image.load("Graphics/dashplaceholder.png")   
+#         #Make a rect based off the image
+        
+#         self.rect = self.image.get_rect()
+#         # Place the x and y at 400 and 600
+#         # These are values for testing and will probably be changed when implemented into levels
+        
+#         self.rect.x = 400
+#         self.rect.y = 600
+    
+#     def draw(self,display):
+#         #If self.image is none, the powerup has been deleted. If you try to blit a deleted image the code crashes.
+#         if self.image != None:
+#             #Blit the image
+#             display.blit(self.image,self.rect.topleft)
+#     #Collision detection with the player and powerup
+    
+#     def collide(self,Player):
+#         #Only collide if the collision hasn't already occured(the powerup is deleted on collision)
+#         if self.rect != None:
+#             #If the player is colliding with the powerup
+#             if self.rect.colliderect(Player.rect):
+#                 #The player now has the ability to dash
+#                 Player.has_dash = True
+#                 #The player now can dash immediately
+#                 Player.can_dash = True
+#                 #delete the sprite
+#                 self.image = None
+#                 #and the hitbox
+#                 self.rect = None
 """ class Temp(Powerup):
     #just for testing
     def __init__(self) -> None:

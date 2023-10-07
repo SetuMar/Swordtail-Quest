@@ -17,30 +17,34 @@ display = pygame.display.set_mode(SCREEN_SIZE)
 clock = pygame.time.Clock()
 # clock -> allows for updating
 
-player_character = player.Player(pygame.Vector2(200, 600))
+player_character = player.Player(pygame.Vector2(0, 0))
 # player
 
-tiles = level_loader.generate_level(r"Graphics\levels\1.tmx")
+tiles = level_loader.generate_level(r"Graphics/Levels/1.tmx")
 # get the tiles for the current level
-double_test = Double_jump()
-#this is a test doublejump object
-dash_test = Dash()
-#this is a test dash object
-#define refresh_dash as a pygame event(to let it work on a timer)
-refresh_dash = pygame.USEREVENT + 1
-#let player dash again after every 4 seconds
-pygame.time.set_timer(refresh_dash,4000)
+
+double_test = Powerup(r"Graphics/doublejumpplaceholder.png", pygame.Vector2(200, 400), "double_jump")
+
+# #this is a test doublejump object
+# dash_test = Dash()
+# #this is a test dash object
+# #define refresh_dash as a pygame event(to let it work on a timer)
+# refresh_dash = pygame.USEREVENT + 1
+# #let player dash again after every 4 seconds
+# pygame.time.set_timer(refresh_dash,4000)
+
 while True:
-    display.fill('white')
+    display.fill('black')
     # clear background to allow for drawing of next frame
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        if event.type == refresh_dash:
-            if player_character.has_dash:
-                player_character.can_dash = True
     # check for exiting the window
+    
+        # if event.type == refresh_dash:
+        #     if player_character.has_dash:
+        #         player_character.can_dash = True
     
     player_character.update(tiles)
     # update the player
@@ -56,9 +60,9 @@ while True:
     #draw in the doublejump object
     double_test.collide(player_character)
     #check for doublejump collisions
-    dash_test.draw(display)
-    #draw in the dash object
-    dash_test.collide(player_character)
+    # dash_test.draw(display)
+    # #draw in the dash object
+    # dash_test.collide(player_character)
     #check for dash collisions
     pygame.display.update()
     clock.tick(FPS)
