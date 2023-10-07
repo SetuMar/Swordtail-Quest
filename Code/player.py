@@ -81,7 +81,7 @@ class Player:
         
         def vertical_movement():
             if keys[JUMP_KEY]: 
-                if self.can_jump or (self.can_double_jump and self.direction.y > 0):
+                if self.can_jump or (self.can_double_jump and self.direction.y > -2):
                     # if JUMP_KEY pressed and player and can_jump or can_double_jump
                     self.direction.y = self.jump_speed
                     # set y-direction to jump_speed
