@@ -1,15 +1,14 @@
 import time
 import pygame
-# import pygame
-import timer
 
+import timer
 from keys import KeyData
 
 from settings import *
-# import settings
-from powerups import *
 
 import math
+
+# TODO: USE A LERP IN THE DASH IN ORDER TO MAKE IT SMOOTHER
 
 class Player:
     def __init__(self, position:pygame.Vector2, move_speed:int = 8, fall_speed:int = 0.5, jump_speed:int = -12, dash_tile_distance = 10, camera_move_distance:int = 200) -> None:
