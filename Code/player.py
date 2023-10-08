@@ -1,6 +1,7 @@
 import pygame
 # import pygame
-
+import timer
+from timer import Timer
 from settings import *
 # import settings
 from powerups import *
@@ -32,23 +33,33 @@ class Player:
         #if the player is currently powered up with dash
         self.can_dash = False
         #if the player has the current ability to perform a dash
+        self.is_dashing = False
+        #if the player is currently dashing
         self.direction = pygame.Vector2(0, 0)
         # direction of movement (on x and y axes)
-        
+        self.dash_timer = timer.Timer(0.25)
+        self.dash_refresh_timer = timer.Timer(2)
         self.free_movement_region = (camera_move_distance, SCREEN_WIDTH - camera_move_distance)
         
     def update(self, tiles:dict):
         keys = pygame.key.get_pressed()
         # pressed keys
-        
+        if self.is_dashing:#If the character is dashing
+            if self.dash_timer.time_check(FPS):#Tick the dash timer and check if it
+                self.is_dashing = False
+        if self.has_dash and not self.can_dash:
+            if self.dash_refresh_timer.time_check(FPS):
+                self.can_dash = True
         def horizontal_movement():
+            if keys[USE_ABILITY_KEY]:#if the use ability key is pressed
+                if self.can_dash:#and the player hasn't dashed in the last 4 seconds
+                    self.is_dashing = True#start the 500 ms dash
+                    self.can_dash = False#Remove ability to dash   
             self.direction.x = (keys[MOVE_RIGHT_KEY] - keys[MOVE_LEFT_KEY]) * self.move_speed
             # move the player in the x and y axes
             # multiply by scalar of move speed
-            if keys[USE_ABILITY_KEY]:#if the use ability key is pressed
-                if self.can_dash:#and the user both is powered up with dash and dash is not on cooldown
-                    self.direction.x = self.direction.x * 50 # Send the player flying at 50* their movement speed for an instant
-                    self.can_dash = False #Put dash on cooldown
+            if self.is_dashing:
+                self.direction.x = 5 * self.direction.x#Quintuple player speed
             if ((self.rect.right > self.free_movement_region[1]) and (self.direction.x > 0) or (self.rect.left < self.free_movement_region[0]) and (self.direction.x < 0)):
             # move the player by the direction
                 for tile_list in tiles.values():
@@ -137,4 +148,3 @@ class Player:
     def draw(self, display:pygame.Surface):
         display.blit(self.image, self.rect.topleft)
         # draw player onto display
-    
