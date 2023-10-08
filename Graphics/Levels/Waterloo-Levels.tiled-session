@@ -8,11 +8,11 @@
     ],
     "fileStates": {
         "1.tmx": {
-            "scale": 0.5006,
+            "scale": 0.48,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 593.2880543347982,
-                "y": 401.51817818617656
+                "x": 908.3333333333334,
+                "y": 521.875
             }
         },
         "spritesheet.tsx": {
@@ -23,7 +23,7 @@
     "last.imagePath": "/Users/setumarathe/Desktop/coding/Waterloo Game/Graphics",
     "map.height": 25,
     "map.lastUsedFormat": "tmx",
-    "map.width": 37,
+    "map.width": 118,
     "openFiles": [
         "spritesheet.tsx",
         "1.tmx",
@@ -31,8 +31,8 @@
     ],
     "project": "Waterloo-Levels.tiled-project",
     "recentFiles": [
-        "spritesheet.tsx",
-        "1.tmx"
+        "1.tmx",
+        "spritesheet.tsx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }

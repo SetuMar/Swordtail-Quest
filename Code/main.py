@@ -4,18 +4,18 @@ import sys
 # import sys and pygame
 
 from settings import *
-# import settings
-import timer
-from timer import *
+
 import level_loader
 import player
-from player import *
-# import game scripts
+
 from powerups import *
+
 pygame.init()
 # initialize pygame
+
 display = pygame.display.set_mode(SCREEN_SIZE)
 # display
+
 clock = pygame.time.Clock()
 # clock -> allows for updating
 
@@ -24,15 +24,13 @@ prev_time = time.time()
 player_character = player.Player(pygame.Vector2(0, 0))
 # player
 
-tiles = level_loader.generate_level(r"Graphics/Levels/1.tmx")
+tiles = level_loader.generate_level(r"Graphics/Levels/test.tmx")
 # get the tiles for the current level
 
 double_test = Powerup(r"Graphics/doublejumpplaceholder.png", pygame.Vector2(200, 400), "double_jump")
 #this is a test doublejump object
 dash_test = Powerup(r"Graphics/dashplaceholder.png", pygame.Vector2(250, 450), "dash")
 #this is a test dash object
-
-
 
 while True:
     display.fill('black')
