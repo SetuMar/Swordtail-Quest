@@ -26,12 +26,6 @@ player_character = player.Player(pygame.Vector2(0, 0))
 
 tiles = level_loader.generate_level(r"Graphics/Levels/test.tmx")
 # get the tiles for the current level
-
-double_test = Powerup(r"Graphics/doublejumpplaceholder.png", pygame.Vector2(200, 400), "double_jump")
-#this is a test doublejump object
-dash_test = Powerup(r"Graphics/dashplaceholder.png", pygame.Vector2(250, 450), "dash")
-#this is a test dash object
-
 while True:
     display.fill('black')
     # clear background to allow for drawing of next frame
@@ -40,24 +34,16 @@ while True:
             pygame.quit()
             sys.exit()
     
-    player_character.update(tiles)
+    player_character.update(tiles, display)
     # update the player
     player_character.draw(display)
     # draw the player
     
     for layer, layer_tiles in tiles.items():
         for t in layer_tiles:
-            if t.rect.left < SCREEN_WIDTH and t.rect.right > 0:
+            if t.image != None and t.rect.left < SCREEN_WIDTH and t.rect.right > 0:
+                if layer in Powerup.powerup_layer_names: t.collide(player_character)
                 t.draw(display)
-    # draw all tiles in the level
-    double_test.draw(display)
-    #draw in the doublejump object
-    double_test.collide(player_character)
-    #check for doublejump collisions
-    dash_test.draw(display)
-    # #draw in the dash object
-    dash_test.collide(player_character)
-    #check for dash collisions
     
     current_time = time.time()
     # current time

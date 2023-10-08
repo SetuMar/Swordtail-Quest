@@ -10,10 +10,10 @@ FPS = 60
 # FPS of game (frames per second)
 
 BLOCK_SIZE = 32
-# 16 x 16 blocks
+# 32 x 32 size for each block
 
 MOVE_LEFT_KEY = ord("a")
 MOVE_RIGHT_KEY = ord("d")
 JUMP_KEY = ord("w")
-USE_ABILITY_KEY = ord("q")
+DASH_KEY = ord("q")
 # keys used for movement

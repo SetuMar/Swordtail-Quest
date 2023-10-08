@@ -1,8 +1,10 @@
 import pygame
     
 class Powerup:
-    def __init__(self, image:str, position:pygame.Vector2, type:str) -> None:
-        self.image = pygame.image.load(image)
+    powerup_layer_names = ["double-jump", "dash"]
+    
+    def __init__(self, image:pygame.Surface, position:pygame.Vector2, type:str) -> None:
+        self.image = image
         self.rect = self.image.get_rect()
         self.rect.topleft = position
         self.type = type
@@ -16,15 +18,13 @@ class Powerup:
             # blit the image
             
     def collide(self, player):
-        if self.rect is not None and self.rect.colliderect(player.rect):
-            # If the player is colliding with the powerup
-                # Delete the sprite
-                #check powerup types and assign appropriate flags
-                if self.type == "double_jump": player.has_double_jump = True
-                if self.type == "dash":
-                     player.has_dash = True
-                     player.can_dash = True
-                self.image = None
-                # and the hitbox
-                self.rect = None
+        if self.image is not None and self.rect.colliderect(player.rect):
+            if self.type == "double-jump":
+                player.num_jumps = 2
+                player.can_double_jump = True
+                
+            if self.type == "dash":
+                 player.can_dash = True
 
+            self.image = None
+            # get rid of powerup visual - not needed

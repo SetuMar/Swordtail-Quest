@@ -1,3 +1,5 @@
+from settings import *
+
 class Timer:
     def __init__(self, wait_time):
         self.current_time = 0
@@ -13,10 +15,10 @@ class Timer:
         self.frame_count = 0
         # reset the timer for new use
 
-    def time_check(self, frame_rate):
+    def time_check(self):
         self.frame_count += 1
         # increase frame count by 1
-        self.current_time = self.frame_count / frame_rate
+        self.current_time = self.frame_count / FPS
         # set the current time to the frame count over the frame rate (get frames per second as to be 1 frame for x seconds passed)
 
         self.count_down_time = self.wait_time - self.current_time
@@ -28,3 +30,6 @@ class Timer:
         else:
             return False
         # reset the timer if it hits 0 by default
+        
+    def get_time_left(self):
+        return round(self.count_down_time, 1)
