@@ -67,7 +67,7 @@ class Player:
             # move the player in the x and y axes
             # multiply by scalar of move speed
             
-            if self.key_data.get_key_on_keydown(DASH_KEY) and self.direction.x != 0 and self.can_dash and self.dash_cooldown_completed:
+            if (self.key_data.get_key_on_keydown(DASH_KEY) or self.key_data.get_key_on_keydown(MAC_DASH_KEY)) and self.direction.x != 0 and self.can_dash and self.dash_cooldown_completed:
             # if dash key is pressed and rh
                 self.move_speed = self.dash_speed
                 # set the play speed as the dash speed
