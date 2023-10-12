@@ -4,7 +4,8 @@ import sys
 # import sys and pygame
 
 from settings import *
-
+import enemy
+from enemy import *
 import level_loader
 import player
 
@@ -23,7 +24,8 @@ prev_time = time.time()
 
 player_character = player.Player(pygame.Vector2(0, 0))
 # player
-
+test_walker = Walker("Graphics/Walkerplaceholder.png",pygame.Vector2(100,200),150,250)
+#this is a test walker object
 tiles = level_loader.generate_level(r"Graphics/Levels/test.tmx")
 # get the tiles for the current level
 while True:
@@ -38,7 +40,9 @@ while True:
     # update the player
     player_character.draw(display)
     # draw the player
-    
+    test_walker.draw(display)
+    test_walker.collide(player_character)
+    test_walker.walk()
     for layer, layer_tiles in tiles.items():
         for t in layer_tiles:
             if t.image != None and t.rect.left < SCREEN_WIDTH and t.rect.right > 0:
