@@ -44,7 +44,7 @@ while True:
     
     player_character.draw(display)
     # draw the player
-    
+
     for layer, layer_tiles in tiles.items():
         for t in layer_tiles:
             if t.image != None and t.rect.left < SCREEN_WIDTH and t.rect.right > 0:
