@@ -8,7 +8,7 @@ from settings import *
 # TODO: USE A LERP IN THE DASH IN ORDER TO MAKE IT SMOOTHER
 
 class Player:
-    def __init__(self, position:pygame.Vector2, move_speed:int = 8, fall_speed:int = 0.5, jump_speed:int = -12, dash_speed = 30, camera_move_distance:int = 200) -> None:
+    def __init__(self, position:pygame.Vector2 = pygame.Vector2(0, 0), move_speed:int = 8, fall_speed:int = 0.5, jump_speed:int = -12, dash_speed = 30, camera_move_distance:int = 200) -> None:
         self.image = pygame.Surface((BLOCK_SIZE, BLOCK_SIZE))
         self.image.fill((255, 0, 0))
         # replace with sprite ASAP
@@ -61,13 +61,13 @@ class Player:
         self.key_data = KeyData()
         # pressed and held key data
         
-    def update(self, tiles:dict, display):
+    def update(self, tiles:dict):
         def horizontal_movement():
             self.direction.x = (self.key_data.get_key_on_hold(MOVE_RIGHT_KEY) - self.key_data.get_key_on_hold(MOVE_LEFT_KEY)) * self.move_speed
             # move the player in the x and y axes
             # multiply by scalar of move speed
             
-            if (self.key_data.get_key_on_keydown(DASH_KEY) or self.key_data.get_key_on_keydown(MAC_DASH_KEY)) and self.direction.x != 0 and self.can_dash and self.dash_cooldown_completed:
+            if self.key_data.get_key_on_keydown(DASH_KEY) and self.direction.x != 0 and self.can_dash and self.dash_cooldown_completed:
             # if dash key is pressed and rh
                 self.move_speed = self.dash_speed
                 # set the play speed as the dash speed
@@ -94,8 +94,9 @@ class Player:
             
             if ((self.rect.right > self.free_movement_region[1]) and (self.direction.x > 0) or (self.rect.left < self.free_movement_region[0]) and (self.direction.x < 0)):
             # if the player is trying to move outside of the free_movement_region
-                for tile_list in tiles.values():
+                for tile_layer, tile_list in tiles.items():
                     for t in tile_list:
+                        if "enemy" in tile_layer: t.anchor_position.x -= self.direction.x
                         t.rect.x -= self.direction.x
                 # move the tiles instead of the player
             else:
@@ -171,6 +172,8 @@ class Player:
         # move horizontally (and collisions)
         if not self.in_dash: vertical_movement()
         # move vertically (and collisions)
+        
+        return self.rect.colliderect(tiles["completed"][0])
             
     def draw(self, display:pygame.Surface):
         display.blit(self.image, self.rect.topleft)

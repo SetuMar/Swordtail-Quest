@@ -1,7 +1,7 @@
 import pygame
     
 class Powerup:
-    powerup_layer_names = ["double-jump", "dash"]
+    powerup_layer_names = ["double_jump", "dash"]
     
     def __init__(self, image:pygame.Surface, position:pygame.Vector2, type:str) -> None:
         self.image = image
@@ -19,7 +19,7 @@ class Powerup:
             
     def collide(self, player):
         if self.image is not None and self.rect.colliderect(player.rect):
-            if self.type == "double-jump":
+            if self.type == "double_jump":
                 player.num_jumps = 2
                 player.can_double_jump = True
                 

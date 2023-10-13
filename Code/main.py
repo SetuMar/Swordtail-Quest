@@ -5,8 +5,8 @@ import sys
 
 from settings import *
 
-import level_loader
 import player
+import level_handler
 
 from powerups import *
 
@@ -21,11 +21,14 @@ clock = pygame.time.Clock()
 
 prev_time = time.time()
 
-player_character = player.Player(pygame.Vector2(0, 0))
+player_character = player.Player()
 # player
 
-tiles = level_loader.generate_level(r"Graphics/Levels/test.tmx")
+game_level_handler = level_handler.GameOverHandler()
+
+tiles, player_character.rect.topleft = game_level_handler.generate_level()
 # get the tiles for the current level
+
 while True:
     display.fill('black')
     # clear background to allow for drawing of next frame
@@ -34,8 +37,11 @@ while True:
             pygame.quit()
             sys.exit()
     
-    player_character.update(tiles, display)
-    # update the player
+    if not game_level_handler.current_level_completed:
+        game_level_handler.current_level_completed = player_character.update(tiles)
+        # update the player
+        # if there is a collision between the player and a green flag, then change the level
+    
     player_character.draw(display)
     # draw the player
     
@@ -43,7 +49,16 @@ while True:
         for t in layer_tiles:
             if t.image != None and t.rect.left < SCREEN_WIDTH and t.rect.right > 0:
                 if layer in Powerup.powerup_layer_names: t.collide(player_character)
+                if "enemy" in layer:
+                    t.collide(player_character)
+                    t.enemy_behaviour()
+                    
                 t.draw(display)
+
+    if game_level_handler.current_level_completed:
+        next_level_data = game_level_handler.complete_level(tiles, player_character)
+        if next_level_data != None:
+            tiles = next_level_data
     
     current_time = time.time()
     # current time
