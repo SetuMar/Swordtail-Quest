@@ -62,6 +62,7 @@ class Player:
         # pressed and held key data
         
         self.health = 1
+        # player health
         
     def update(self, tiles:dict):
         def horizontal_movement():
