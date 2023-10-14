@@ -17,7 +17,7 @@ class Powerup:
             display.blit(self.image,self.rect.topleft)
             # blit the image
             
-    def collide(self, player):
+    def collide(self, player, powerup_holder):
         if self.image is not None and self.rect.colliderect(player.rect):
             if self.type == "double_jump":
                 player.num_jumps = 2
@@ -26,5 +26,7 @@ class Powerup:
             if self.type == "dash":
                  player.can_dash = True
 
+            player.health += 1
+            powerup_holder.held_powerups.append(self.type)
             self.image = None
             # get rid of powerup visual - not needed

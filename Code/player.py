@@ -61,6 +61,8 @@ class Player:
         self.key_data = KeyData()
         # pressed and held key data
         
+        self.health = 1
+        
     def update(self, tiles:dict):
         def horizontal_movement():
             self.direction.x = (self.key_data.get_key_on_hold(MOVE_RIGHT_KEY) - self.key_data.get_key_on_hold(MOVE_LEFT_KEY)) * self.move_speed

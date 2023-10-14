@@ -1,5 +1,5 @@
 {
-    "activeFile": "l1.tmx",
+    "activeFile": "l2.tmx",
     "expandedProjectPaths": [
     ],
     "fileStates": {
@@ -13,7 +13,7 @@
         },
         "l1.tmx": {
             "scale": 0.3862,
-            "selectedLayer": 5,
+            "selectedLayer": 1,
             "viewCenter": {
                 "x": 846.7115484205076,
                 "y": 552.8223718280684
@@ -23,7 +23,7 @@
             "scale": 1.1127,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 364.8782241394806,
+                "x": 365.7769389772625,
                 "y": 517.2103891435247
             }
         },
@@ -46,8 +46,8 @@
     ],
     "project": "",
     "recentFiles": [
-        "l2.tmx",
         "l1.tmx",
+        "l2.tmx",
         "test.tmx",
         "spritesheet.tsx",
         "1.tmx"

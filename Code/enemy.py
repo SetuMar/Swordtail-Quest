@@ -22,9 +22,12 @@ class Enemy:
             display.blit(self.image, self.rect.topleft)
             # blit the image
             
-    def collide(self, player):
+    def collide(self, player, powerup_holder):
         if self.image is not None and self.rect.colliderect(player.rect):
+            player.health -= 1
             self.image = None
+            if len(powerup_holder.held_powerups) > 0:
+                del powerup_holder.held_powerups[-1]
             # TODO: Currently, player kills enemy on contact. replace this later
             
 class Walker(Enemy):

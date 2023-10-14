@@ -25,6 +25,17 @@ class GameOverHandler:
     
         return tiles
     
+    def restart_level(self, tiles, player):
+        self.current_level = f'Graphics/Levels/l{self.level_number}.tmx'
+        tiles, player.rect.topleft = self.generate_level()
+        
+        player.health = 1
+        player.direction = pygame.Vector2(0, 0)
+        
+        self.current_level_completed = False
+        
+        return tiles
+    
     def generate_level(self):
         tmx_data = load_pygame(self.current_level)
         # get the data for a specific level

@@ -9,6 +9,7 @@ import player
 import level_handler
 
 from powerups import *
+from ui import PowerupHolder
 
 pygame.init()
 # initialize pygame
@@ -29,8 +30,10 @@ game_level_handler = level_handler.GameOverHandler()
 tiles, player_character.rect.topleft = game_level_handler.generate_level()
 # get the tiles for the current level
 
+powerup_display = PowerupHolder(pygame.Vector2(100, 100))
+
 while True:
-    display.fill('black')
+    display.fill('blue')
     # clear background to allow for drawing of next frame
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -48,17 +51,25 @@ while True:
     for layer, layer_tiles in tiles.items():
         for t in layer_tiles:
             if t.image != None and t.rect.left < SCREEN_WIDTH and t.rect.right > 0:
-                if layer in Powerup.powerup_layer_names: t.collide(player_character)
+                if layer in Powerup.powerup_layer_names: t.collide(player_character, powerup_display)
+                
                 if "enemy" in layer:
-                    t.collide(player_character)
+                    t.collide(player_character, powerup_display)
                     t.enemy_behaviour()
                     
                 t.draw(display)
+    
+    if player_character.health <= 0:
+        level_data = game_level_handler.restart_level(tiles, player_character)
+        if level_data != None:
+            tiles = level_data
 
     if game_level_handler.current_level_completed:
         next_level_data = game_level_handler.complete_level(tiles, player_character)
         if next_level_data != None:
             tiles = next_level_data
+            
+    powerup_display.draw(display)
     
     current_time = time.time()
     # current time
