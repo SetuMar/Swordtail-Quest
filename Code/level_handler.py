@@ -26,6 +26,9 @@ class GameOverHandler:
         self.level_number += 1
         self.current_level = str(graphics_path / 'Levels' / f'l{self.level_number}.tmx')
         tiles, player.rect.topleft = self.generate_level()
+        
+        block.Tile.determine_level_length(tiles)
+        block.Tile.block_shift(tiles, player)
 
         self.current_level_completed = False
 
@@ -34,6 +37,9 @@ class GameOverHandler:
     def restart_level(self, tiles, player):
         self.current_level = str(graphics_path / 'Levels' / f'l{self.level_number}.tmx')
         tiles, player.rect.topleft = self.generate_level()
+        
+        block.Tile.determine_level_length(tiles)
+        block.Tile.block_shift(tiles, player)
 
         player.health = 1
         player.direction = pygame.Vector2(0, 0)

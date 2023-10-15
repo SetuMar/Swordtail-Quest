@@ -1,4 +1,8 @@
 {
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
     "activeFile": "l1.tmx",
     "expandedProjectPaths": [
     ],
@@ -12,19 +16,19 @@
             }
         },
         "l1.tmx": {
-            "scale": 0.6382,
-            "selectedLayer": 1,
+            "scale": 0.3213,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 3513.0053274835473,
-                "y": 771.7016609213413
+                "x": 1708.6834733893559,
+                "y": 54.466230936819215
             }
         },
         "l2.tmx": {
             "scale": 1.1127,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 365.7769389772625,
-                "y": 517.2103891435247
+                "x": 1887.3011593421406,
+                "y": 399.47874539408645
             }
         },
         "spritesheet.tsx": {
@@ -40,6 +44,8 @@
             }
         }
     },
+    "map.height": 53,
+    "map.lastUsedFormat": "tmx",
     "openFiles": [
         "l1.tmx",
         "l2.tmx"

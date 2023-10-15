@@ -37,6 +37,7 @@ tiles, player_character.rect.topleft = game_level_handler.generate_level()
 powerup_display = PowerupHolder(pygame.Vector2(100, 100))
 
 block.Tile.determine_level_length(tiles)
+block.Tile.block_shift(tiles, player_character)
 
 while True:
     display.fill('blue')
