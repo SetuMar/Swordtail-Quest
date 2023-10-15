@@ -15,7 +15,6 @@ current_file = pl.Path(__file__)
 parent_directory = current_file.parent.parent
 graphics_path = pl.Path(parent_directory / 'Graphics')
 
-
 class GameOverHandler:
     def __init__(self) -> None:
         self.current_level_completed = False

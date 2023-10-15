@@ -26,7 +26,9 @@ class PowerupHolder:
         self.powerup_gap_space = 10
         # gap between each powerup
 
-        self.image_dimensions = (len(powerups.Powerup.powerup_layer_names) * BLOCK_SIZE + (2 * self.powerup_gap_space) + ((len(powerups.Powerup.powerup_layer_names) - 1) * self.powerup_gap_space), BLOCK_SIZE + (2 * self.powerup_gap_space))
+        self.image_dimensions = (len(powerups.Powerup.powerup_layer_names) * BLOCK_SIZE + (2 * self.powerup_gap_space) + 
+                                 ((len(powerups.Powerup.powerup_layer_names) - 1) * self.powerup_gap_space), 
+                                 BLOCK_SIZE + (2 * self.powerup_gap_space))
         # dimensions of each image
         self.image = pygame.Surface(self.image_dimensions)
         # create image surface

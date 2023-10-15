@@ -1,3 +1,4 @@
+import math
 import time
 import pygame
 import sys
@@ -11,10 +12,12 @@ import level_handler
 from powerups import *
 from ui import PowerupHolder
 
+import block
+
 pygame.init()
 # initialize pygame
 
-display = pygame.display.set_mode(SCREEN_SIZE)
+display = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 # display
 
 clock = pygame.time.Clock()
@@ -33,6 +36,8 @@ tiles, player_character.rect.topleft = game_level_handler.generate_level()
 
 powerup_display = PowerupHolder(pygame.Vector2(100, 100))
 
+block.Tile.determine_level_length(tiles)
+
 while True:
     display.fill('blue')
     # clear background to allow for drawing of next frame
@@ -41,18 +46,18 @@ while True:
             pygame.quit()
             sys.exit()
     
-    if not game_level_handler.current_level_completed:
-        game_level_handler.current_level_completed = player_character.update(tiles)
-        # update the player
-        # if there is a collision between the player and a green flag, then change the level
-    
-    player_character.draw(display)
-    # draw the player
+    block.Tile.dimensions = {
+        "left":math.inf,
+        "top":math.inf,
+        "right":-math.inf,
+        "bottom":-math.inf
+    }
 
     for layer, layer_tiles in tiles.items():
     # go through all tile layers and the tiles on the layer
         for t in layer_tiles:
         # go through each tile in the layer
+            block.Tile.determine_bounds(t)
             if t.image != None and t.rect.left < SCREEN_WIDTH and t.rect.right > 0:
                 # so long as the tile is in bounds and the image can be drawn (exists):
                 
@@ -67,6 +72,14 @@ while True:
                     
                 t.draw(display)
                 # draw the tile
+                
+    if not game_level_handler.current_level_completed:
+        game_level_handler.current_level_completed = player_character.update(tiles)
+        # update the player
+        # if there is a collision between the player and a green flag, then change the level
+    
+    player_character.draw(display)
+    # draw the player
     
     if player_character.health <= 0:
     # if the player health is completed

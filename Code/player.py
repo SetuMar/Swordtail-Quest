@@ -1,10 +1,11 @@
+import time
 import pygame
 
 import timer_global
 from keys import KeyData
 
 from settings import *
-
+from block import Tile
 
 # TODO: USE A LERP IN THE DASH IN ORDER TO MAKE IT SMOOTHER
 
@@ -26,7 +27,6 @@ class Player:
         self.fall_speed = fall_speed
         # player fall speed
 
-        self.can_jump = False
         # if the player can jump
         self.jump_speed = jump_speed
         # player jump speed
@@ -54,6 +54,9 @@ class Player:
         # timer for each dash length
         self.dash_cooldown_completed = True
         # if the cooldown for the dash has been completed
+        
+        self.prev_on_floor = True
+        self.on_floor = True
 
         dash_cooldown = 5
         # how long the cooldown should last
@@ -65,8 +68,12 @@ class Player:
 
         self.health = 1
         # player health
+        
+        self.lock_camera = False
 
-    def update(self, tiles: dict) -> bool:
+    def update(self, tiles: dict,) -> bool:
+        self.prev_on_floor = self.on_floor
+        
         def horizontal_movement():
             self.direction.x = (self.key_data.get_key_on_hold(MOVE_RIGHT_KEY) - self.key_data.get_key_on_hold(
                 MOVE_LEFT_KEY)) * self.move_speed
@@ -77,7 +84,9 @@ class Player:
                self.direction.x != 0 and \
                self.can_dash and \
                self.dash_cooldown_completed:
-                # if dash key is pressed and rh
+                # if dash key is pressed and the player is moving
+                # and the cooldown has completed and the player can dash
+                
                 self.move_speed = self.dash_speed
                 # set the play speed as the dash speed
                 self.in_dash = True
@@ -100,9 +109,16 @@ class Player:
                     # wait the cooldown period
                     self.dash_cooldown_completed = True
                     # set the cooldown to completed
+            
+            if (self.direction.x < 0 and Tile.dimensions["left"] >= 0) or \
+                (self.direction.x > 0 and Tile.dimensions["left"] <= -(Tile.level_length - SCREEN_WIDTH)):
+                self.lock_camera = True
+            else:
+                self.lock_camera = False
 
-            if self.rect.right > self.free_movement_region[1] and self.direction.x > 0 or \
-               self.rect.left < self.free_movement_region[0] and self.direction.x < 0:
+            if (self.rect.right > self.free_movement_region[1] and self.direction.x > 0 or \
+               self.rect.left < self.free_movement_region[0] and self.direction.x < 0) and \
+                   not self.lock_camera:
                 # if the player is trying to move outside the free_movement_region
                 for tile_layer, tile_list in tiles.items():
                     for t in tile_list:
@@ -136,29 +152,27 @@ class Player:
                         # stop movement on the x for this frame
 
         def vertical_movement():
+            
             if self.key_data.get_key_on_keydown(JUMP_KEY) and self.num_jumps > 0:
                 # if JUMP_KEY pressed and the player is allowed to jump (has jumps available)
                 self.direction.y = self.jump_speed
                 # set y-direction to jump_speed
                 # Check whether this is a jump or a double jump
-                self.can_jump = False
-                # remove ability to jump until landing
                 self.num_jumps -= 1
+                
+                self.on_floor = False
 
             self.direction.y += self.fall_speed
             # add gravity to y-direction 
             self.rect.y += self.direction.y
             # move the player by the y-direction on the y axis
 
-            floor_collision_detected = False
-            # if a floor direction has been detected
-
             for t in tiles["outline"]:
                 # loop through tiles
                 if self.rect.colliderect(t.rect):
                     # check for collision with tiles
 
-                    if (self.direction.y > 0) and (self.rect.top < t.rect.top):
+                    if (self.direction.y > 0) and (self.rect.top <= t.rect.top):
                         # if the player is moving down and 
                         # the player's top is farther down than the top of the colliding block 
                         # (a collision was detected on the same level as the player)
@@ -168,17 +182,17 @@ class Player:
                         self.direction.y = 0
                         # stop moving the player down (no need for gravity)
                         self.num_jumps = 1 + (1 * self.can_double_jump)
-                        # reset jump (add double jump if allowed)                   
-                        floor_collision_detected = True
-                        # a collision has been detected
+                        # reset jump (add double jump if allowed)    
+                        self.on_floor = True 
 
                     elif (self.direction.y < 0) and (self.rect.top > t.rect.top):
                         self.rect.top = t.rect.bottom
                         self.direction.y = 0
-
-            if not floor_collision_detected:
-                self.can_jump = False
-            # if a floor is not detected, then do not allow jump
+            
+            if self.direction.y > self.fall_speed: self.on_floor = False
+            
+            if self.on_floor and not self.prev_on_floor:
+                self.num_jumps -= 1
 
         horizontal_movement()
         # move horizontally (and collisions)
