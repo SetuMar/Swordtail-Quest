@@ -23,8 +23,12 @@ class Tile:
         self.rect.topleft = position
         # set position of rectangle
         
+        self.position = position
+        
     def draw(self, display:pygame.Surface):
-        display.blit(self.image, self.rect.topleft)
+        if self.image != None:
+            self.rect.topleft = self.position
+            display.blit(self.image, self.rect.topleft)
         # draw rectangle to display
         
     @staticmethod
@@ -39,7 +43,7 @@ class Tile:
         for layer_tiles in tiles.values():
         # go through all tile layers and the tiles on the layer
             for t in layer_tiles:
-                t.rect.y -= shift_amt
+                t.position.y -= shift_amt
                 
         player.rect.y -= shift_amt
         
@@ -56,5 +60,7 @@ class Tile:
         
     @classmethod
     def determine_bounds(cls, tile):
-        if tile.rect.left < cls.dimensions["left"]: cls.dimensions["left"] = tile.rect.left
-        if tile.rect.right > cls.dimensions["right"]: cls.dimensions["right"] = tile.rect.right
+        if tile.position.x < cls.dimensions["left"]: cls.dimensions["left"] = tile.position.x
+        if tile.position.x + BLOCK_SIZE > cls.dimensions["right"]: cls.dimensions["right"] = tile.position.x + BLOCK_SIZE
+        if tile.position.y < cls.dimensions["top"]: cls.dimensions["top"] = tile.position.y
+        if tile.position.y + BLOCK_SIZE > cls.dimensions["bottom"]: cls.dimensions["bottom"] = tile.position.y + BLOCK_SIZE

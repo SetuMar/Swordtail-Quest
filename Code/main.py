@@ -10,14 +10,14 @@ import player
 import level_handler
 
 from powerups import *
-from ui import PowerupHolder
+import ui
 
 import block
 
 pygame.init()
 # initialize pygame
 
-display = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+display = pygame.display.set_mode(SCREEN_SIZE)
 # display
 
 clock = pygame.time.Clock()
@@ -34,10 +34,14 @@ game_level_handler = level_handler.GameOverHandler()
 tiles, player_character.rect.topleft = game_level_handler.generate_level()
 # get the tiles for the current level
 
-powerup_display = PowerupHolder(pygame.Vector2(100, 100))
+in_between_level_display = ui.BetweenLevelHolderMenu()
+
+powerup_display = ui.PowerupHolder()
 
 block.Tile.determine_level_length(tiles)
 block.Tile.block_shift(tiles, player_character)
+
+proceed_to_level_load = False
 
 while True:
     display.fill('blue')
@@ -59,22 +63,25 @@ while True:
         for t in layer_tiles:
         # go through each tile in the layer
             block.Tile.determine_bounds(t)
-            if t.image != None and t.rect.left < SCREEN_WIDTH and t.rect.right > 0:
-                # so long as the tile is in bounds and the image can be drawn (exists):
-                
-                if layer in Powerup.powerup_layer_names: t.collide(player_character, powerup_display)
-                # check powerup collision
-                
-                if "enemy" in layer:
-                    t.collide(player_character, powerup_display)
-                    # check for enemy collision
-                    t.enemy_behaviour()
-                    # conduct enemy behaviour
+            if t.position.x < SCREEN_WIDTH and t.position.x + BLOCK_SIZE > 0:
+                if t.image != None:
+                    # so long as the tile is in bounds and the image can be drawn (exists):
                     
-                t.draw(display)
-                # draw the tile
+                    if layer in Powerup.powerup_layer_names: t.collide(player_character, powerup_display)
+                    # check powerup collision
+                    
+                    if "enemy" in layer:
+                        t.collide(player_character, powerup_display)
+                        # check for enemy collision
+                        t.enemy_behaviour()
+                        # conduct enemy behaviour
+                        
+                    t.draw(display)
+                    # draw the tile
+                else:
+                    if layer in Powerup.powerup_layer_names or "enemy" in layer: t.draw_particles(display)
                 
-    if not game_level_handler.current_level_completed:
+    if not game_level_handler.current_level_completed and player_character.health >= 0 and (player_character.rect.bottom - BLOCK_SIZE) < SCREEN_HEIGHT:
         game_level_handler.current_level_completed = player_character.update(tiles)
         # update the player
         # if there is a collision between the player and a green flag, then change the level
@@ -82,28 +89,35 @@ while True:
     player_character.draw(display)
     # draw the player
     
-    if player_character.health <= 0:
-    # if the player health is completed
-    
-        level_data = game_level_handler.restart_level(tiles, player_character)
-        # get the data for the current level
-        
-        if level_data != None:
-            tiles = level_data
-            # resets the positions of the tiles back to what they were at the start
-
-    if game_level_handler.current_level_completed:
-    # if the level is completed
-        
-        next_level_data = game_level_handler.complete_level(tiles, player_character)
-        # get the data for the next level
-        
-        if next_level_data != None:
-            tiles = next_level_data
-            # set the tiles in this level the ones the data has been collected for
-            
     powerup_display.draw(display)
     
+    if player_character.health <= 0 or game_level_handler.current_level_completed or (player_character.rect.bottom - BLOCK_SIZE) >= SCREEN_HEIGHT:
+    # if the player health is completed
+        
+        level_data = None
+        
+        if player_character.health <= 0 or (player_character.rect.bottom - BLOCK_SIZE) >= SCREEN_HEIGHT: 
+            proceed_to_level_load = in_between_level_display.draw("OH NO! PRESS SPACE TO RETRY.", display)
+            if proceed_to_level_load: level_data = game_level_handler.restart_level(tiles, player_character)
+        # get the data for the current level
+        
+        if game_level_handler.current_level_completed: 
+            proceed_to_level_load = in_between_level_display.draw("LEVEL COMPLETE! PRESS SPACE TO CONTINUE.", display)
+            if proceed_to_level_load: level_data = game_level_handler.complete_level(tiles, player_character)
+        # get the data for the next level
+        
+        if level_data != None:
+            powerup_display.held_powerups = []
+            tiles = level_data
+            in_between_level_display.key_pressed = False
+            in_between_level_display.current_level_completed = False
+            in_between_level_display.opacity_transition_completed = False
+            in_between_level_display.opacity = 0
+            # resets the positions of the tiles back to what they were at the start
+            
+        player_character.can_dash = False
+        player_character.can_double_jump = False
+
     current_time = time.time()
     # current time
     

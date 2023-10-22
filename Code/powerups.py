@@ -1,5 +1,6 @@
 import pygame
-    
+import particles
+
 class Powerup:
     powerup_layer_names = ["double_jump", "dash"]
     # names for each layer of powerups
@@ -13,14 +14,29 @@ class Powerup:
         # set position of powerup rect
         self.type = type
         # set type of powerup
+        self.position = position
+        
+        self.particles = None
+        self.generate_particles = False
     
     def draw(self, display):
+        self.rect.topleft = self.position
+
         # if self.image is none, the powerup has been deleted
         # if you try to blit a deleted image the code crashes
         if self.image != None:
         # if image does not exist, then do not draw
             display.blit(self.image,self.rect.topleft)
             # blit the image
+        else:
+            if self.particles == None:
+                if self.type == "double_jump": color = (46, 112, 219)
+                if self.type == "dash": color = (230, 41, 60)
+                
+                self.particles = particles.Particle.generate_system(color, self.rect.center, 5, 5, 0.9, 10)
+    
+    def draw_particles(self, display):
+        particles.Particle.simulate_system(self.particles, display)
             
     def collide(self, player, powerup_holder):
         if self.rect.colliderect(player.rect):

@@ -67,10 +67,13 @@ class GameOverHandler:
                 position = pygame.Vector2(tile_data[0] * BLOCK_SIZE, tile_data[1] * BLOCK_SIZE)
                 if layer.name in powerups.Powerup.powerup_layer_names:
                     layer_tiles.append(powerups.Powerup(image, position, layer.name))
+                
                 elif layer.name == "player":
                     player_position = position
+                
                 elif layer.name == "walker_enemy":
                     layer_tiles.append(enemy.Walker(image, position))
+                
                 else:
                     layer_tiles.append(block.Tile(image, position))
             # add tile to list of tiles

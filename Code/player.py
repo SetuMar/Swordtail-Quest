@@ -1,4 +1,3 @@
-import time
 import pygame
 
 import timer_global
@@ -7,13 +6,21 @@ from keys import KeyData
 from settings import *
 from block import Tile
 
-# TODO: USE A LERP IN THE DASH IN ORDER TO MAKE IT SMOOTHER
+from os import walk
 
 class Player:
     def __init__(self, position: pygame.Vector2 = pygame.Vector2(0, 0), move_speed: int = 8, fall_speed: int = 0.5,
-                 jump_speed: int = -12, dash_speed=30, camera_move_distance: int = 200) -> None:
-        self.image = pygame.Surface((BLOCK_SIZE, BLOCK_SIZE))
-        self.image.fill((255, 0, 0))
+                 jump_speed: int = -12, dash_speed=30, h_camera_move_distance: int = 200, v_camera_move_distance: int = 100) -> None:
+        self.sprites = self.get_sprites(r"Graphics/Player Sprites")
+        self.previous_image_state = "idle"
+        self.image_state = "idle"
+        self.frame_number = 0
+        time_between_frames = 0.1
+        self.animation_timer = timer_global.Timer(time_between_frames)
+        
+        self.look_dir = "right"
+        
+        self.image = self.sprites[self.image_state][0]
         # replace with sprite ASAP
 
         self.rect = self.image.get_rect()
@@ -33,7 +40,8 @@ class Player:
         self.direction = pygame.Vector2(0, 0)
         # direction of movement (on x and y axes)
 
-        self.free_movement_region = (camera_move_distance, SCREEN_WIDTH - camera_move_distance)
+        self.h_free_movement_region = (h_camera_move_distance, SCREEN_WIDTH - h_camera_move_distance)
+        self.v_free_movement_region = (v_camera_move_distance, SCREEN_HEIGHT - v_camera_move_distance)
         # area of free movement before camera start to move as well
 
         self.num_jumps = 0
@@ -69,9 +77,22 @@ class Player:
         self.health = 1
         # player health
         
-        self.lock_camera = False
+        self.h_lock_camera = False
+        self.v_lock_camera = False
+        
+        self.powerup_history = []
+        
+    def get_sprites(self, sprites_location):
+        sprites = {}
+        for (root, dirs, files) in walk(sprites_location):
+            # for sprite in files
+            if dirs == []:
+                state_name = root.replace(sprites_location + "/", '')
+                sprites[state_name] = [pygame.image.load(f'{sprites_location}/{state_name}/{f}') for f in files]
+                
+        return sprites
 
-    def update(self, tiles: dict,) -> bool:
+    def update(self, tiles: dict,) -> bool:        
         self.prev_on_floor = self.on_floor
         
         def horizontal_movement():
@@ -79,6 +100,9 @@ class Player:
                 MOVE_LEFT_KEY)) * self.move_speed
             # move the player in the x and y axes
             # multiply by scalar of move speed
+            
+            if self.direction.x != 0:
+                self.look_dir = "left" if self.direction.x < 0 else "right"
 
             if self.key_data.get_key_on_keydown(DASH_KEY) and \
                self.direction.x != 0 and \
@@ -112,19 +136,19 @@ class Player:
             
             if (self.direction.x < 0 and Tile.dimensions["left"] >= 0) or \
                 (self.direction.x > 0 and Tile.dimensions["left"] <= -(Tile.level_length - SCREEN_WIDTH)):
-                self.lock_camera = True
+                self.h_lock_camera = True
             else:
-                self.lock_camera = False
+                self.h_lock_camera = False
 
-            if (self.rect.right > self.free_movement_region[1] and self.direction.x > 0 or \
-               self.rect.left < self.free_movement_region[0] and self.direction.x < 0) and \
-                   not self.lock_camera:
-                # if the player is trying to move outside the free_movement_region
+            if (self.rect.right > self.h_free_movement_region[1] and self.direction.x > 0 or \
+               self.rect.left < self.h_free_movement_region[0] and self.direction.x < 0) and \
+                   not self.h_lock_camera:
+                # if the player is trying to move outside the h_free_movement_region
                 for tile_layer, tile_list in tiles.items():
                     for t in tile_list:
                         if "enemy" in tile_layer:
                             t.anchor_position.x -= self.direction.x
-                        t.rect.x -= self.direction.x
+                        t.position.x -= self.direction.x
                 # move the tiles instead of the player
             else:
                 self.rect.x += self.direction.x
@@ -152,8 +176,7 @@ class Player:
                         # stop movement on the x for this frame
 
         def vertical_movement():
-            
-            if self.key_data.get_key_on_keydown(JUMP_KEY) and self.num_jumps > 0:
+            if self.key_data.get_key_on_keydown(JUMP_KEY) and self.num_jumps > 0 and (self.on_floor or self.can_double_jump):
                 # if JUMP_KEY pressed and the player is allowed to jump (has jumps available)
                 self.direction.y = self.jump_speed
                 # set y-direction to jump_speed
@@ -163,9 +186,25 @@ class Player:
                 self.on_floor = False
 
             self.direction.y += self.fall_speed
-            # add gravity to y-direction 
-            self.rect.y += self.direction.y
-            # move the player by the y-direction on the y axis
+            # add gravity to y-direction
+            
+            if self.rect.bottom <= Tile.dimensions["bottom"] - BLOCK_SIZE * 2:
+                self.v_lock_camera = False
+            else:
+                self.v_lock_camera = True
+            
+            if ((self.rect.top < self.v_free_movement_region[0] and self.direction.y < 0) or \
+                (self.rect.bottom > self.v_free_movement_region[1] and self.direction.y > 0)) and \
+                not self.v_lock_camera:
+                    
+                    for tile_layer, tile_list in tiles.items():
+                        for t in tile_list:
+                            t.position.y -= self.direction.y
+                    # move the tiles instead of the player      
+            
+            else:
+                self.rect.y += self.direction.y
+                # move the player by the y-direction on the y axis
 
             for t in tiles["outline"]:
                 # loop through tiles
@@ -194,14 +233,53 @@ class Player:
             if self.on_floor and not self.prev_on_floor:
                 self.num_jumps -= 1
 
-        horizontal_movement()
-        # move horizontally (and collisions)
         if not self.in_dash:
             vertical_movement()
         # move vertically (and collisions)
+        horizontal_movement()
+        # move horizontally (and collisions)
 
         return self.rect.colliderect(tiles["completed"][0])
-
+        # check for collision between completion flag
+        
+    def state_machine(self):
+        self.previous_image_state = self.image_state
+        
+        if not self.on_floor != 0:
+            if self.direction.y < 0:
+                self.image_state = "jump"
+            else:
+                self.image_state = "fall"
+        elif self.direction.x != 0:
+            self.image_state = "run"
+        else:
+            self.image_state = "idle"
+    
+    def animate(self):
+        if self.image_state != self.previous_image_state:
+            self.frame_number = 0
+        
+        if self.animation_timer.time_check():
+            save_x = self.rect.x
+            save_bottom = self.rect.bottom
+            
+            self.frame_number += 1
+            
+            if self.frame_number >= len(self.sprites[self.image_state]):
+                self.frame_number = 0
+        
+            self.image = self.sprites[self.image_state][self.frame_number]
+            
+            if self.look_dir == "left":
+                self.image = pygame.transform.flip(self.image, True, False)
+                
+            self.rect = self.image.get_rect()
+            self.rect.x = save_x
+            self.rect.bottom = save_bottom                
+        
     def draw(self, display: pygame.Surface):
+        self.state_machine()
+        self.animate()
+        
         display.blit(self.image, self.rect.topleft)
         # draw player onto display
