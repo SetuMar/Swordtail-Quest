@@ -3,11 +3,8 @@ import pygame
 from screeninfo import get_monitors
 # get monitor size -> pip install screeninfo
 
-# SCREEN_WIDTH = get_monitors()[0].width
-# SCREEN_HEIGHT = get_monitors()[0].height
-
-SCREEN_WIDTH = 1000
-SCREEN_HEIGHT = 800
+SCREEN_WIDTH = get_monitors()[0].width
+SCREEN_HEIGHT = get_monitors()[0].height
 
 SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
 # screen dimensions

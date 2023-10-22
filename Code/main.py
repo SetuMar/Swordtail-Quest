@@ -17,7 +17,7 @@ import block
 pygame.init()
 # initialize pygame
 
-display = pygame.display.set_mode(SCREEN_SIZE)
+display = pygame.display.set_mode(SCREEN_SIZE, pygame.FULLSCREEN)
 # display
 
 clock = pygame.time.Clock()

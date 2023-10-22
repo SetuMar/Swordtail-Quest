@@ -7,6 +7,7 @@ from settings import *
 from block import Tile
 
 from os import walk
+from pathlib import Path
 
 class Player:
     def __init__(self, position: pygame.Vector2 = pygame.Vector2(0, 0), move_speed: int = 8, fall_speed: int = 0.5,
@@ -84,13 +85,13 @@ class Player:
         
     def get_sprites(self, sprites_location):
         sprites = {}
-        for (root, dirs, files) in walk(sprites_location):
-            # for sprite in files
-            if dirs == []:
-                state_name = root.replace(sprites_location + "/", '')
-                sprites[state_name] = [pygame.image.load(f'{sprites_location}/{state_name}/{f}') for f in files]
-                
+        sprites_location = Path(sprites_location)
+        for path in sprites_location.iterdir():
+            if path.is_dir():
+                state_name = path.name
+                sprites[state_name] = [pygame.image.load(str(image_path)) for image_path in path.iterdir()]
         return sprites
+
 
     def update(self, tiles: dict,) -> bool:        
         self.prev_on_floor = self.on_floor
