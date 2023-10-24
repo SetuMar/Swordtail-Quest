@@ -264,9 +264,6 @@ class Player:
             self.frame_number = 0
         
         if self.animation_timer.time_check():
-            save_x = self.rect.x
-            save_bottom = self.rect.bottom
-            
             self.frame_number += 1
             
             if self.frame_number >= len(self.sprites[self.image_state]):
@@ -275,11 +272,7 @@ class Player:
             self.image = self.sprites[self.image_state][self.frame_number]
             
             if self.look_dir == "left":
-                self.image = pygame.transform.flip(self.image, True, False)
-                
-            self.rect = self.image.get_rect()
-            self.rect.x = save_x
-            self.rect.bottom = save_bottom                
+                self.image = pygame.transform.flip(self.image, True, False)           
         
     def draw(self, display: pygame.Surface):
         self.state_machine()
