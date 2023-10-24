@@ -72,23 +72,22 @@ while True:
         for t in layer_tiles:
         # go through each tile in the layer
             block.Tile.determine_bounds(t)
-            if t.position.x < SCREEN_WIDTH and t.position.x + BLOCK_SIZE > 0:
-                if t.image != None:
-                    # so long as the tile is in bounds and the image can be drawn (exists):
+            if t.image != None:
+                # so long as the tile is in bounds and the image can be drawn (exists):
+                
+                if layer in Powerup.powerup_layer_names: t.collide(player_character, powerup_display)
+                # check powerup collision
+                
+                if "enemy" in layer:
+                    t.collide(player_character, powerup_display)
+                    # check for enemy collision
+                    t.enemy_behaviour()
+                    # conduct enemy behaviour
                     
-                    if layer in Powerup.powerup_layer_names: t.collide(player_character, powerup_display)
-                    # check powerup collision
-                    
-                    if "enemy" in layer:
-                        t.collide(player_character, powerup_display)
-                        # check for enemy collision
-                        t.enemy_behaviour()
-                        # conduct enemy behaviour
-                        
-                    t.draw(display)
-                    # draw the tile
-                else:
-                    if layer in Powerup.powerup_layer_names or "enemy" in layer: t.draw_particles(display)
+                t.draw(display)
+                # draw the tile
+            else:
+                if layer in Powerup.powerup_layer_names or "enemy" in layer: t.draw_particles(display)
                 
     
     if player_character.health <= 0 or game_level_handler.current_level_completed or (player_character.rect.bottom - BLOCK_SIZE) >= SCREEN_HEIGHT:

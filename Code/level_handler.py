@@ -73,6 +73,12 @@ class GameOverHandler:
                 
                 elif layer.name == "walker_enemy":
                     layer_tiles.append(enemy.Walker(image, position))
+                    
+                elif layer.name == "etc":
+                    b = block.Tile(image, position)
+                    b.position.y -= (b.image.get_height() / 2) + (b.image.get_height() / 4)
+                    b.rect.y -= (b.image.get_height() / 2) + (b.image.get_height() / 4)
+                    layer_tiles.append(b)
                 
                 else:
                     layer_tiles.append(block.Tile(image, position))

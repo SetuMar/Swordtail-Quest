@@ -8,6 +8,10 @@
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "/Users/setumarathe/Desktop/coding/Waterloo Game/Graphics/assets/assets.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "/Users/setumarathe/Desktop/waterloo-cs-proj-49faebd8cbf58ece013f262288f2535491c4e147/Graphics/Levels/l1.tmx": {
             "scale": 0.4511,
             "selectedLayer": 0,
@@ -19,6 +23,14 @@
         "/Users/setumarathe/Desktop/waterloo-cs-proj-49faebd8cbf58ece013f262288f2535491c4e147/Graphics/Levels/spritesheet.tsx": {
             "scaleInDock": 1
         },
+        "/Users/setumarathe/Downloads/waterloo-cs-proj 2/Levels/1. Forest/Forest Assets/Forest Decorations/objects.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 0.1838,
+            "scaleInEditor": 0.71
+        },
+        "assets.tsx": {
+            "dynamicWrapping": true
+        },
         "l1.tmx": {
             "scale": 0.4958,
             "selectedLayer": 1,
@@ -28,11 +40,12 @@
             }
         },
         "spritesheet.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 1
         }
     },
-    "last.imagePath": "/Users/setumarathe/Desktop/coding/Waterloo Game/Graphics",
+    "last.imagePath": "/Users/setumarathe/Desktop/coding/Waterloo Game/Graphics/assets",
     "map.height": 30,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 64,
@@ -43,6 +56,8 @@
     ],
     "project": "waterloo.tiled-project",
     "recentFiles": [
+        "/Users/setumarathe/Desktop/coding/Waterloo Game/Graphics/assets/assets.tsx",
+        "/Users/setumarathe/Downloads/waterloo-cs-proj 2/Levels/1. Forest/Forest Assets/Forest Decorations/objects.tsx",
         "l1.tmx",
         "/Users/setumarathe/Desktop/waterloo-cs-proj-49faebd8cbf58ece013f262288f2535491c4e147/Graphics/Levels/l1.tmx",
         "spritesheet.tsx"
@@ -51,5 +66,6 @@
     "tileset.tileSize": {
         "height": 64,
         "width": 64
-    }
+    },
+    "tileset.type": 1
 }
