@@ -6,6 +6,9 @@ from screeninfo import get_monitors
 SCREEN_WIDTH = get_monitors()[0].width
 SCREEN_HEIGHT = get_monitors()[0].height
 
+# SCREEN_WIDTH = 800
+# SCREEN_HEIGHT = 800
+
 SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
 # screen dimensions
 

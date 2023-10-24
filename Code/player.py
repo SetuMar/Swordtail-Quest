@@ -105,36 +105,37 @@ class Player:
             if self.direction.x != 0:
                 self.look_dir = "left" if self.direction.x < 0 else "right"
 
-            if self.key_data.get_key_on_keydown(DASH_KEY) and \
-               self.direction.x != 0 and \
-               self.can_dash and \
-               self.dash_cooldown_completed:
-                # if dash key is pressed and the player is moving
-                # and the cooldown has completed and the player can dash
-                
-                self.move_speed = self.dash_speed
-                # set the play speed as the dash speed
-                self.in_dash = True
-                # set the player in dash
+            if self.can_dash:
+                if self.key_data.get_key_on_keydown(DASH_KEY) and \
+                self.direction.x != 0 and \
+                self.can_dash and \
+                self.dash_cooldown_completed:
+                    # if dash key is pressed and the player is moving
+                    # and the cooldown has completed and the player can dash
+                    
+                    self.move_speed = self.dash_speed
+                    # set the play speed as the dash speed
+                    self.in_dash = True
+                    # set the player in dash
 
-            if self.in_dash:
-                # if the player is in dash
-                if self.dash_timer.time_check() or self.direction.x == 0:
-                    # if they dash for the stated legal time or exit the dash early by not moving on the axes:
-                    self.move_speed = self.normal_move_speed
-                    # change the move speed back to normal
-                    self.dash_cooldown_completed = False
-                    # require player to cooldown dash
-                    self.in_dash = False
-                    # player is no longer in dash
+                if self.in_dash:
+                    # if the player is in dash
+                    if self.dash_timer.time_check() or self.direction.x == 0:
+                        # if they dash for the stated legal time or exit the dash early by not moving on the axes:
+                        self.move_speed = self.normal_move_speed
+                        # change the move speed back to normal
+                        self.dash_cooldown_completed = False
+                        # require player to cooldown dash
+                        self.in_dash = False
+                        # player is no longer in dash
 
-            if not self.dash_cooldown_completed:
-                # if the dash cooldown isn't completed
-                if self.dash_cooldown_timer.time_check():
-                    # wait the cooldown period
-                    self.dash_cooldown_completed = True
-                    # set the cooldown to completed
-            
+                if not self.dash_cooldown_completed:
+                    # if the dash cooldown isn't completed
+                    if self.dash_cooldown_timer.time_check():
+                        # wait the cooldown period
+                        self.dash_cooldown_completed = True
+                        # set the cooldown to completed
+                        
             if (self.direction.x < 0 and Tile.dimensions["left"] >= 0) or \
                 (self.direction.x > 0 and Tile.dimensions["left"] <= -(Tile.level_length - SCREEN_WIDTH)):
                 self.h_lock_camera = True
@@ -158,11 +159,10 @@ class Player:
             for t in tiles["outline"]:
                 # loop through tiles
                 if self.rect.colliderect(t.rect):
-                    # check for collision with tiles
 
                     # check if the player has collided with a block to the side
 
-                    if self.direction.x > 0 and self.rect.right > t.rect.left:
+                    if self.direction.x > 0:
                         # check collision for player too far right
                         self.rect.right = t.rect.left
                         # set the player's right to the left of the block (place at boundary)
@@ -175,9 +175,11 @@ class Player:
                         # set the player's left to the right of the block (place at boundary)
                         self.direction.x = 0
                         # stop movement on the x for this frame
+            
+
 
         def vertical_movement():
-            if self.key_data.get_key_on_keydown(JUMP_KEY) and self.num_jumps > 0 and (self.on_floor or self.can_double_jump):
+            if self.key_data.get_key_on_keydown(JUMP_KEY) and (self.num_jumps > 0 or self.on_floor):
                 # if JUMP_KEY pressed and the player is allowed to jump (has jumps available)
                 self.direction.y = self.jump_speed
                 # set y-direction to jump_speed
@@ -234,11 +236,12 @@ class Player:
             if self.on_floor and not self.prev_on_floor:
                 self.num_jumps -= 1
 
+        horizontal_movement()
+        # move horizontally (and collisions)
+        
         if not self.in_dash:
             vertical_movement()
         # move vertically (and collisions)
-        horizontal_movement()
-        # move horizontally (and collisions)
 
         return self.rect.colliderect(tiles["completed"][0])
         # check for collision between completion flag

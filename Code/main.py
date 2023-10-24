@@ -12,6 +12,8 @@ import level_handler
 from powerups import *
 import ui
 
+import pathlib as pl
+
 import block
 
 pygame.init()
@@ -41,11 +43,18 @@ powerup_display = ui.PowerupHolder()
 block.Tile.determine_level_length(tiles)
 block.Tile.block_shift(tiles, player_character)
 
+def load_bg():
+    if game_level_handler.level_number < 2: path = pl.Path("Graphics/backgrounds/forest_background.png")
+    background = pygame.transform.scale(pygame.image.load(path), (SCREEN_WIDTH, SCREEN_HEIGHT))
+    
+    return background
+
+background = load_bg()
+
 proceed_to_level_load = False
 
 while True:
-    display.fill('blue')
-    # clear background to allow for drawing of next frame
+    display.blit(background, (0, 0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -81,15 +90,6 @@ while True:
                 else:
                     if layer in Powerup.powerup_layer_names or "enemy" in layer: t.draw_particles(display)
                 
-    if not game_level_handler.current_level_completed and player_character.health >= 0 and (player_character.rect.bottom - BLOCK_SIZE) < SCREEN_HEIGHT:
-        game_level_handler.current_level_completed = player_character.update(tiles)
-        # update the player
-        # if there is a collision between the player and a green flag, then change the level
-    
-    player_character.draw(display)
-    # draw the player
-    
-    powerup_display.draw(display)
     
     if player_character.health <= 0 or game_level_handler.current_level_completed or (player_character.rect.bottom - BLOCK_SIZE) >= SCREEN_HEIGHT:
     # if the player health is completed
@@ -117,7 +117,17 @@ while True:
             
         player_character.can_dash = False
         player_character.can_double_jump = False
+        background = load_bg()
 
+    else:
+        game_level_handler.current_level_completed = player_character.update(tiles)
+        # update the player
+        # if there is a collision between the player and a green flag, then change the level
+    
+        player_character.draw(display)
+        # draw the player
+    
+    powerup_display.draw(display)
     current_time = time.time()
     # current time
     

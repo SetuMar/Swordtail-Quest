@@ -1,0 +1,55 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "l1.tmx",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "/Users/setumarathe/Desktop/waterloo-cs-proj-49faebd8cbf58ece013f262288f2535491c4e147/Graphics/Levels/l1.tmx": {
+            "scale": 0.4511,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 513.1899800487697,
+                "y": 1517.401906450898
+            }
+        },
+        "/Users/setumarathe/Desktop/waterloo-cs-proj-49faebd8cbf58ece013f262288f2535491c4e147/Graphics/Levels/spritesheet.tsx": {
+            "scaleInDock": 1
+        },
+        "l1.tmx": {
+            "scale": 0.4958,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 541.5490116982655,
+                "y": 1584.3081887858007
+            }
+        },
+        "spritesheet.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "/Users/setumarathe/Desktop/coding/Waterloo Game/Graphics",
+    "map.height": 30,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 64,
+    "map.tileWidth": 64,
+    "map.width": 36,
+    "openFiles": [
+        "l1.tmx"
+    ],
+    "project": "waterloo.tiled-project",
+    "recentFiles": [
+        "l1.tmx",
+        "/Users/setumarathe/Desktop/waterloo-cs-proj-49faebd8cbf58ece013f262288f2535491c4e147/Graphics/Levels/l1.tmx",
+        "spritesheet.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 64,
+        "width": 64
+    }
+}
