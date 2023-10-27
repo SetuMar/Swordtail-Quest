@@ -8,7 +8,7 @@ from block import Tile
 
 from os import walk
 from pathlib import Path
-
+from sounds import jumpSound
 class Player:
     def __init__(self, position: pygame.Vector2 = pygame.Vector2(0, 0), move_speed: int = 8, fall_speed: int = 0.5,
                  jump_speed: int = -12, dash_speed=30, h_camera_move_distance: int = 200, v_camera_move_distance: int = 100) -> None:
@@ -183,7 +183,7 @@ class Player:
                 # set y-direction to jump_speed
                 # Check whether this is a jump or a double jump
                 self.num_jumps -= 1
-                
+                pygame.mixer.Sound.play(jumpSound)
                 self.on_floor = False
 
             self.direction.y += self.fall_speed

@@ -3,7 +3,6 @@ import time
 import pygame
 import sys
 # import sys and pygame
-
 from settings import *
 
 import player
@@ -15,9 +14,11 @@ import ui
 import pathlib as pl
 
 import block
-
+from sounds import loseLifeSound
 pygame.init()
 # initialize pygame
+pygame.mixer.init()
+#initialize pygame sound
 
 display = pygame.display.set_mode(SCREEN_SIZE, pygame.FULLSCREEN)
 # display
@@ -52,7 +53,8 @@ def load_bg():
 background = load_bg()
 
 proceed_to_level_load = False
-
+global llplayed
+llplayed = False
 while True:
     display.blit(background, (0, 0))
     for event in pygame.event.get():
@@ -96,6 +98,9 @@ while True:
         level_data = None
         
         if player_character.health <= 0 or (player_character.rect.bottom - BLOCK_SIZE) >= SCREEN_HEIGHT: 
+            if not llplayed:
+                llplayed = True
+                pygame.mixer.Sound.play(loseLifeSound)
             proceed_to_level_load = in_between_level_display.draw("OH NO! PRESS SPACE TO RETRY.", display)
             if proceed_to_level_load: level_data = game_level_handler.restart_level(tiles, player_character)
         # get the data for the current level
@@ -122,7 +127,7 @@ while True:
         game_level_handler.current_level_completed = player_character.update(tiles)
         # update the player
         # if there is a collision between the player and a green flag, then change the level
-    
+        llplayed = False
         player_character.draw(display)
         # draw the player
     

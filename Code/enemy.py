@@ -2,8 +2,7 @@ import copy
 import pygame
 from particles import Particle
 from settings import *
-
-
+from sounds import hitSound,hurtSound
 class Enemy:
     # parent enemy class for all
     def __init__(self, image: pygame.surface, position: pygame.Vector2):
@@ -33,17 +32,19 @@ class Enemy:
 
     def collide(self, player, powerup_holder):
         if self.image is not None and self.rect.colliderect(player.rect):            
-            player.health -= 1
             self.image = None
-            if len(powerup_holder.held_powerups) > 0:
-                match powerup_holder.held_powerups[-1]:
-                    case "double_jump":
-                        player.can_double_jump = False
-                    case "dash":
-                        player.can_dash = False
-                
-                del powerup_holder.held_powerups[-1]
-
+            if not player.is_dashing:             
+                pygame.mixer.Sound.play(hurtSound)
+                player.health -= 1
+                if len(powerup_holder.held_powerups) > 0:
+                    match powerup_holder.held_powerups[-1]:
+                        case "double_jump":
+                            player.can_double_jump = False
+                        case "dash":
+                            player.can_dash = False
+                    del powerup_holder.held_powerups[-1]
+            else:
+                pygame.mixer.Sound.play(hitSound)
             self.particles = Particle.generate_system((128, 15, 27), self.rect.center, 5, 5, 0.9, 10)
 
 class Walker(Enemy):

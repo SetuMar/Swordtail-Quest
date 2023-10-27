@@ -1,6 +1,6 @@
 import pygame
 import particles
-
+from sounds import powerUpSound
 class Powerup:
     powerup_layer_names = ["double_jump", "dash"]
     # names for each layer of powerups
@@ -41,6 +41,7 @@ class Powerup:
     def collide(self, player, powerup_holder):
         if self.rect.colliderect(player.rect):
         # check for powerups collision
+            pygame.mixer.Sound.play(powerUpSound)
             if self.type == "double_jump":
                 player.num_jumps = 2
                 player.can_double_jump = True
