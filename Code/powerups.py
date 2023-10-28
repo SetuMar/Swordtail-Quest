@@ -42,18 +42,21 @@ class Powerup:
         if self.rect.colliderect(player.rect):
         # check for powerups collision
             pygame.mixer.Sound.play(powerUpSound)
-            if self.type == "double_jump":
+            if self.type == "double_jump" and not player.can_double_jump:
                 player.num_jumps = 2
                 player.can_double_jump = True
-            # if double jump, then player can double jump
-                
-            if self.type == "dash":
+                # if double jump, then player can double jump
+                player.health += 1
+                # increase the health of the player
+                powerup_holder.held_powerups.append(self.type)
+                # update the display of the held powerups
+            if self.type == "dash" and not player.can_dash:
                  player.can_dash = True
-            # if dash, then player can dash
-
-            player.health += 1
-            # increase the health of the player
-            powerup_holder.held_powerups.append(self.type)
-            # update the display of the held powerups
+                 # if dash, then player can dash
+                 player.health += 1
+                 # increase the health of the player
+                 powerup_holder.held_powerups.append(self.type)
+                 # update the display of the held powerups
+            
             self.image = None
             # get rid of powerup visual - not needed
