@@ -11,7 +11,7 @@ from pathlib import Path
 from sounds import jumpSound
 class Player:
     def __init__(self, position: pygame.Vector2 = pygame.Vector2(0, 0), move_speed: int = 8, fall_speed: int = 0.5,
-                 jump_speed: int = -12, dash_speed=30, h_camera_move_distance: int = 200, v_camera_move_distance: int = 100) -> None:
+                 jump_speed: int = -12, dash_speed = 20, h_camera_move_distance: int = 200, v_camera_move_distance: int = 100) -> None:
         self.sprites = self.get_sprites(r"Graphics/Player Sprites")
         self.previous_image_state = "idle"
         self.image_state = "idle"
@@ -67,7 +67,7 @@ class Player:
         self.prev_on_floor = True
         self.on_floor = True
 
-        dash_cooldown = 5
+        dash_cooldown = 1
         # how long the cooldown should last
         self.dash_cooldown_timer = timer_global.Timer(dash_cooldown)
         # dash cooldown timer

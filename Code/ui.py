@@ -43,7 +43,7 @@ class PowerupHolder:
         self.prev_held_powerups_length = 0
         # length of the powerups list last frame (for updates)
         
-        self.image_opacity = 100
+        self.image_opacity = 150
         self.image.fill((0, 0, 0, self.image_opacity))
 
     def draw(self, display:pygame.Surface):

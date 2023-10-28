@@ -20,7 +20,7 @@ pygame.init()
 pygame.mixer.init()
 #initialize pygame sound
 
-display = pygame.display.set_mode(SCREEN_SIZE, pygame.FULLSCREEN)
+display = pygame.display.set_mode(SCREEN_SIZE)
 # display
 
 clock = pygame.time.Clock()

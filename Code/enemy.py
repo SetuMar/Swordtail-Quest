@@ -1,5 +1,6 @@
 import copy
 import pygame
+import player
 from particles import Particle
 from settings import *
 from sounds import hitSound,hurtSound
@@ -33,7 +34,7 @@ class Enemy:
     def collide(self, player, powerup_holder):
         if self.image is not None and self.rect.colliderect(player.rect):            
             self.image = None
-            if not player.is_dashing:             
+            if not player.in_dash:             
                 pygame.mixer.Sound.play(hurtSound)
                 player.health -= 1
                 if len(powerup_holder.held_powerups) > 0:
