@@ -8,10 +8,11 @@ from block import Tile
 
 from os import walk
 from pathlib import Path
-from sounds import jumpSound
+from sounds import jumpSound,dashSound
+
 class Player:
     def __init__(self, position: pygame.Vector2 = pygame.Vector2(0, 0), move_speed: int = 8, fall_speed: int = 0.5,
-                 jump_speed: int = -12, dash_speed = 20, h_camera_move_distance: int = 200, v_camera_move_distance: int = 100) -> None:
+                 jump_speed: int = -12, dash_speed = 20, h_camera_move_distance: int = 500, v_camera_move_distance: int = 100) -> None:
         self.sprites = self.get_sprites(r"Graphics/Player Sprites")
         self.previous_image_state = "idle"
         self.image_state = "idle"
@@ -117,6 +118,7 @@ class Player:
                     # set the play speed as the dash speed
                     self.in_dash = True
                     # set the player in dash
+                    pygame.mixer.Sound.play(dashSound)
 
                 if self.in_dash:
                     # if the player is in dash
