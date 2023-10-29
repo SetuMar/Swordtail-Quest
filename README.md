@@ -5,7 +5,7 @@ Thank you for looking at our repo.
 
 **CREDITS:**
 
-- Powerups, SFX, Enemies by @BurgandyToad
+- Powerups, SFX, Enemies by @BurgundyToad
 - Music Composition by @Spooksam6
 - Graphics and Level Design by @DirectMaker 
 - File Management by @BobZheng00
