@@ -22,5 +22,5 @@ MOVE_LEFT_KEY = ord("a")
 MOVE_RIGHT_KEY = ord("d")
 JUMP_KEY = ord("w")
 DASH_KEY = pygame.K_SPACE
-MAC_DASH_KEY = pygame.K_LMETA
+MAC_DASH_KEY = pygame.K_SPACE
 # keys used for movement

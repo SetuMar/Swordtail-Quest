@@ -75,7 +75,7 @@ class BetweenLevelHolderMenu:
         self.rect = self.image.get_rect()
         
         self.opacity = 0
-        self.opacity_increase_amt = 40
+        self.opacity_increase_amt = 0
         
         self.font = pygame.font.Font(r"Graphics/PixelifySans-VariableFont_wght.ttf", 50)
         self.font_color = (255, 255, 255)

@@ -21,20 +21,21 @@ class GameOverHandler:
         self.current_level_completed = False
         self.level_number = 1
 
-        self.current_level = str(graphics_path / 'Levels' / 'l1.tmx')
+        self.current_level = str(graphics_path / 'Levels' / f'l{self.level_number}.tmx')
 
     def complete_level(self, tiles, player):
         self.level_number += 1
-        self.current_level = str(graphics_path / 'Levels' / f'l{self.level_number}.tmx')
-        tiles, player.rect.topleft = self.generate_level()
-        player.health = 1
-        block.Tile.determine_level_length(tiles)
-        block.Tile.block_shift(tiles, player)
-        pygame.mixer.Sound.play(winSound)
+        if self.level_number < 9:
+            self.current_level = str(graphics_path / 'Levels' / f'l{self.level_number}.tmx')
+            tiles, player.rect.topleft = self.generate_level()
+            player.health = 1
+            block.Tile.determine_level_length(tiles)
+            block.Tile.block_shift(tiles, player)
+            pygame.mixer.Sound.play(winSound)
 
-        self.current_level_completed = False
+            self.current_level_completed = False
 
-        return tiles
+            return tiles
 
     def restart_level(self, tiles, player):
         self.current_level = str(graphics_path / 'Levels' / f'l{self.level_number}.tmx')
