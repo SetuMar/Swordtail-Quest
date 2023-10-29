@@ -177,6 +177,10 @@ class Player:
                         # set the player's left to the right of the block (place at boundary)
                         self.direction.x = 0
                         # stop movement on the x for this frame
+                
+            for t in tiles["liquid"]:
+                if self.rect.colliderect(t.rect):
+                    self.health = 0
                         
         def vertical_movement():
             if self.key_data.get_key_on_keydown(JUMP_KEY) and (self.num_jumps > 0 or self.on_floor):
