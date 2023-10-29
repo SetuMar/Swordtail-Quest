@@ -54,7 +54,7 @@ class Walker(Enemy):
 	def __init__(self, image: pygame.Surface, position: pygame.Vector2, move_speed: int = 2):
 		super().__init__(image, position)
 
-		self.left_right_move_amt = 1.1
+		self.left_right_move_amt = 1
 		# number of tiles the enemy can be moved left or right
 		# used to keep game uniform
 		

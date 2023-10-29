@@ -45,7 +45,18 @@ block.Tile.determine_level_length(tiles)
 block.Tile.block_shift(tiles, player_character)
 
 def load_bg():
-    if game_level_handler.level_number < 3: path = pl.Path("Graphics/backgrounds/forest_background.png")
+    if game_level_handler.level_number < 3:
+        path = pl.Path("Graphics/backgrounds/forest_background.png")
+
+    if 2 < game_level_handler.level_number < 5:
+        path = pl.Path("Graphics/backgrounds/pirate_bay_background.png")
+
+    if 4 < game_level_handler.level_number < 7:
+        path = pl.Path("Graphics/backgrounds/volcano_background.png")
+
+    if 6 < game_level_handler.level_number:
+        path = pl.Path("Graphics/backgrounds/ice_background.png")
+
     background = pygame.transform.scale(pygame.image.load(path), (SCREEN_WIDTH, SCREEN_HEIGHT))
     
     return background

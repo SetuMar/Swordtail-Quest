@@ -55,6 +55,10 @@ class GameOverHandler:
         tiles = {}
         # list of all tiles
 
+        # # audio 
+        # self.bg_music = pygame.mixer.Sound('music/Forest_Theme.mp3')
+        # self.bg_music.play(loops = -1)
+
         player_position = None
 
         for layer in tmx_data.visible_layers:
