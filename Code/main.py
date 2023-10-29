@@ -74,10 +74,22 @@ while True:
             pygame.mixer.music.load("Music/Forest_Theme.mp3")
             pygame.mixer.music.play(-1)
             mPlaying = True
-        else:
+        elif 2 < game_level_handler.level_number < 5:
+            pygame.mixer.music.load("Music/Pirate_Theme.mp3")
+            pygame.mixer.music.play(-1)
+            mPlaying = True
+
+        elif 4 < game_level_handler.level_number < 7:
             pygame.mixer.music.load("Music/Volcano_Theme.mp3")
             pygame.mixer.music.play(-1)
             mPlaying = True
+
+        elif 6 < game_level_handler.level_number:
+            pygame.mixer.music.load("Music/Ice_Theme.mp3")
+            pygame.mixer.music.play(-1)
+            mPlaying = True
+
+
     display.blit(background, (0, 0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
