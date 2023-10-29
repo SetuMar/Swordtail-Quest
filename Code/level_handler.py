@@ -9,6 +9,7 @@ from settings import *
 # import game files
 
 import powerups
+from sounds import winSound
 
 # create the relative path of the Graphics folder
 current_file = pl.Path(__file__)
@@ -29,6 +30,7 @@ class GameOverHandler:
         player.health = 1
         block.Tile.determine_level_length(tiles)
         block.Tile.block_shift(tiles, player)
+        pygame.mixer.Sound.play(winSound)
 
         self.current_level_completed = False
 
