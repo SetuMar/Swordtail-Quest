@@ -71,11 +71,11 @@ while True:
     if not mPlaying:
         if game_level_handler.level_number < 3:
 
-            pygame.mixer.music.load("Music/Forest_Theme.wav")
+            pygame.mixer.music.load("Music/Forest_Theme.mp3")
             pygame.mixer.music.play(-1)
             mPlaying = True
         else:
-            pygame.mixer.music.load("Music/Volcano_Theme.wav")
+            pygame.mixer.music.load("Music/Volcano_Theme.mp3")
             pygame.mixer.music.play(-1)
             mPlaying = True
     display.blit(background, (0, 0))
