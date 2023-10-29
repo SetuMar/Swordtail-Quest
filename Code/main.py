@@ -66,7 +66,18 @@ background = load_bg()
 proceed_to_level_load = False
 global llplayed
 llplayed = False
+mPlaying = False
 while True:
+    if not mPlaying:
+        if game_level_handler.level_number < 3:
+
+            pygame.mixer.music.load("Music/Forest_Theme.mp3")
+            pygame.mixer.music.play(-1)
+            mPlaying = True
+        else:
+            pygame.mixer.music.load("Music/Volcano_Theme.mp3")
+            pygame.mixer.music.play(-1)
+            mPlaying = True
     display.blit(background, (0, 0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -112,13 +123,20 @@ while True:
             if not llplayed:
                 llplayed = True
                 pygame.mixer.Sound.play(loseLifeSound)
+                pygame.mixer.music.stop()
             proceed_to_level_load = in_between_level_display.draw("OH NO! PRESS SPACE TO RETRY.", display)
-            if proceed_to_level_load: level_data = game_level_handler.restart_level(tiles, player_character)
+            if proceed_to_level_load:
+                level_data = game_level_handler.restart_level(tiles, player_character)
+                pygame.mixer.music.stop()
+                mPlaying = False
         # get the data for the current level
         
         if game_level_handler.current_level_completed: 
             proceed_to_level_load = in_between_level_display.draw("LEVEL COMPLETE! PRESS SPACE TO CONTINUE.", display)
-            if proceed_to_level_load: level_data = game_level_handler.complete_level(tiles, player_character)
+            if proceed_to_level_load: 
+                pygame.mixer.music.stop()
+                mPlaying = False
+                level_data = game_level_handler.complete_level(tiles, player_character)
         # get the data for the next level
         
         if level_data != None:
