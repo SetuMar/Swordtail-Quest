@@ -26,7 +26,7 @@ class GameOverHandler:
         self.level_number += 1
         self.current_level = str(graphics_path / 'Levels' / f'l{self.level_number}.tmx')
         tiles, player.rect.topleft = self.generate_level()
-        
+        player.health = 1
         block.Tile.determine_level_length(tiles)
         block.Tile.block_shift(tiles, player)
 
