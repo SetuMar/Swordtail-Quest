@@ -16,6 +16,7 @@ current_file = pl.Path(__file__)
 parent_directory = current_file.parent.parent
 graphics_path = pl.Path(parent_directory / 'Graphics')
 
+
 class GameOverHandler:
     def __init__(self) -> None:
         self.current_level_completed = False
@@ -40,7 +41,7 @@ class GameOverHandler:
     def restart_level(self, tiles, player):
         self.current_level = str(graphics_path / 'Levels' / f'l{self.level_number}.tmx')
         tiles, player.rect.topleft = self.generate_level()
-        
+
         block.Tile.determine_level_length(tiles)
         block.Tile.block_shift(tiles, player)
 
@@ -74,19 +75,19 @@ class GameOverHandler:
                 position = pygame.Vector2(tile_data[0] * BLOCK_SIZE, tile_data[1] * BLOCK_SIZE)
                 if layer.name in powerups.Powerup.powerup_layer_names:
                     layer_tiles.append(powerups.Powerup(image, position, layer.name))
-                
+
                 elif layer.name == "player":
                     player_position = position
-                
+
                 elif layer.name == "walker_enemy":
                     layer_tiles.append(enemy.Walker(image, position))
-                    
+
                 elif layer.name == "deco_big":
                     b = block.Tile(image, position)
                     b.position.y -= (b.image.get_height() / 2) + (b.image.get_height() / 4)
                     b.rect.y -= (b.image.get_height() / 2) + (b.image.get_height() / 4)
                     layer_tiles.append(b)
-                
+
                 else:
                     layer_tiles.append(block.Tile(image, position))
             # add tile to list of tiles

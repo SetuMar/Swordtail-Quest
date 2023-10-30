@@ -10,10 +10,14 @@ from os import walk
 from pathlib import Path
 from sounds import jumpSound,dashSound
 
+current_file = Path(__file__)
+parent_directory = current_file.parent.parent
+graphics_path = Path(parent_directory / 'Graphics')
+
 class Player:
     def __init__(self, position: pygame.Vector2 = pygame.Vector2(0, 0), move_speed: int = 8, fall_speed: int = 0.5,
                  jump_speed: int = -12, dash_speed = 20, h_camera_move_distance: int = 500, v_camera_move_distance: int = 100) -> None:
-        self.sprites = self.get_sprites(r"Graphics/Player Sprites")
+        self.sprites = self.get_sprites(graphics_path / r"Player Sprites")
         self.previous_image_state = "idle"
         self.image_state = "idle"
         self.frame_number = 0

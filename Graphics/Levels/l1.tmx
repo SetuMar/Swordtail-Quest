@@ -187,7 +187,7 @@
    <image width="83" height="64" source="../assets/forest_sign_1.png"/>
   </tile>
  </tileset>
- <tileset firstgid="6146" source="../../../../../OneDrive - MSFT/Pygame Assets/Level 64x64/Completed Levels/spritesheet.tsx"/>
+ <tileset firstgid="6146" source="../Levels/spritesheet.tsx"/>
  <layer id="14" name="deco_small" width="100" height="30">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

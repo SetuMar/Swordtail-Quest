@@ -77,7 +77,7 @@ class BetweenLevelHolderMenu:
         self.opacity = 0
         self.opacity_increase_amt = 0
         
-        self.font = pygame.font.Font(r"Graphics/PixelifySans-VariableFont_wght.ttf", 50)
+        self.font = pygame.font.Font(graphics_path / r"PixelifySans-VariableFont_wght.ttf", 50)
         self.font_color = (255, 255, 255)
         
         self.continue_event_key = pygame.K_SPACE
