@@ -9,4 +9,4 @@ Thank you for looking at our repo.
 - Music Composition by @Spooksam6
 - Graphics and Level Design by @DirectMaker 
 - File Management by @BobZheng00
-- Player movement, scene management, game functionality by @SetuMar
+- Player movement, scene management, game functionality by @SetuMar (PROJECT LEAD)
