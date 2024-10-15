@@ -1,8 +1,4 @@
 # Swordtail-Quest
-Waterloo CS Project
-
-Thank you for looking at our repo.
-
 **CREDITS:**
 
 - Powerups, SFX, Enemies by @BurgundyToad
